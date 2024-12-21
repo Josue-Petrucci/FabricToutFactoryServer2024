@@ -3,8 +3,6 @@ package be.petrucci.javabeans;
 import java.io.Serializable;
 import java.util.Date;
 
-import be.petrucci.enums.MaintenanceStatus;
-
 
 public class Maintenance implements Serializable {
 	private static final long serialVersionUID = 6578454947386542915L;

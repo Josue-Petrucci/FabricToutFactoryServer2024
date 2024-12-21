@@ -3,9 +3,6 @@ package be.petrucci.javabeans;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import be.petrucci.enums.MachineStatus;
-import be.petrucci.enums.MachineType;
-
 public class Machine implements Serializable{
 	private static final long serialVersionUID = -1046535624725789699L;
 	private int id;

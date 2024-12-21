@@ -1,4 +1,4 @@
-package be.petrucci.enums;
+package be.petrucci.javabeans;
 
 public enum MachineType {
 	Fabrication,

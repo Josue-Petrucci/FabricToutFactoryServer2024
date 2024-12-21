@@ -29,6 +29,6 @@
   </context-param>
   <context-param>
     <param-name>db.password</param-name>
-    <param-value>root</param-value>
+    <param-value>changeme</param-value>
   </context-param>  
 </web-app>

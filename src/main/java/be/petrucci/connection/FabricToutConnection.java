@@ -1,4 +1,4 @@
-package be.petrucci.dao;
+package be.petrucci.connection;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -21,7 +21,6 @@ public class FabricToutConnection {
  			String password = context.getInitParameter("db.password");                                                                  
  			instance = DriverManager.getConnection(chaineConnexion, username, password);
 		} catch(ClassNotFoundException ex) {
-			
 			JOptionPane.showMessageDialog(null, "Classe de driver introuvable" + ex.getMessage());
 			System.exit(0);
 		} catch (SQLException ex) { 

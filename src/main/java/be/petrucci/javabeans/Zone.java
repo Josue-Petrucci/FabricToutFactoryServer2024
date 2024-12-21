@@ -3,8 +3,6 @@ package be.petrucci.javabeans;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import be.petrucci.enums.DangerLevel;
-
 public class Zone implements Serializable {
 	private static final long serialVersionUID = -7817333198883984982L;
 	private int id;
