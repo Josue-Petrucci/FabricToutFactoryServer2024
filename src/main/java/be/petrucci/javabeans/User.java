@@ -9,7 +9,7 @@ public abstract class User implements Serializable {
 	private String firstname;
 	private int age;
 	private String address;
-	private int matricule;
+	private String matricule;
 	private String password;
 	
 	public int getId() {
@@ -52,11 +52,11 @@ public abstract class User implements Serializable {
 		this.address = address;
 	}
 	
-	public int getMatricule() {
+	public String getMatricule() {
 		return matricule;
 	}
 	
-	public void setMatricule(int matricule) {
+	public void setMatricule(String matricule) {
 		this.matricule = matricule;
 	}
 	
