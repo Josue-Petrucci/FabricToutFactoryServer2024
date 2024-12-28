@@ -52,4 +52,37 @@ public class Zone implements Serializable {
 	}
 	
 	public Zone() {}
+	
+	public Zone(int id, char zoneLetter, DangerLevel dangerLevel, Site site) {
+		this.id = id;
+		this.zoneLetter = zoneLetter;
+		this.dangerLevel = dangerLevel;
+		this.site = site;
+	}
+	
+	public void addMachine(Machine machine) {
+		if(!machines.contains(machine)) {
+			machines.add(machine);
+		}
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		Zone z = null;
+		if(obj == null || obj.getClass() == this.getClass()) {
+			return true;
+		}
+		
+		z = (Zone)obj;
+		if(z.getId() == this.getId() ) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	@Override
+	public int hashCode() {
+		return this.hashCode();
+	}
 }

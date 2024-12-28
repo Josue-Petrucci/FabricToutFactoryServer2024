@@ -69,4 +69,14 @@ public abstract class User implements Serializable {
 	}
 	
 	public User() {}
+
+	public User(int id, String lastname, String firstname, int age, String address, String matricule, String password) {
+		this.id = id;
+		this.lastname = lastname;
+		this.firstname = firstname;
+		this.age = age;
+		this.address = address;
+		this.matricule = matricule;
+		this.password = password;
+	}
 }

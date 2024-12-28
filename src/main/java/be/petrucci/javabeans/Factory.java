@@ -34,4 +34,37 @@ public class Factory implements Serializable {
 	}
 
 	public Factory() {}
+	
+	public Factory(int id, String name, Site site) {
+		this.id = id;
+		this.name = name;
+		sites = new ArrayList<Site>();
+		addSite(site);
+	}
+	
+	public void addSite(Site site) {
+		if(!sites.contains(site)) {
+			sites.add(site);
+		}
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		Factory f = null;
+		if(obj == null || obj.getClass() == this.getClass()) {
+			return true;
+		}
+		
+		f = (Factory)obj;
+		if(f.getName().equals(this.getName())) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	@Override
+	public int hashCode() {
+		return this.getName().hashCode();
+	}
 }

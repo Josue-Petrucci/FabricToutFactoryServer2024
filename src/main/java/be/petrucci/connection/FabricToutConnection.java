@@ -22,7 +22,7 @@ public class FabricToutConnection {
  			String password = params.get("db.password");                                                                  
  			instance = DriverManager.getConnection(chaineConnexion, username, password);
 		} catch(ClassNotFoundException ex) {
-			JOptionPane.showMessageDialog(null, "Classe de driver introuvable" + ex.getMessage());
+			JOptionPane.showMessageDialog(null, "Classe de driver introuvable : " + ex.getMessage());
 			System.exit(0);
 		} catch (SQLException ex) { 
 			JOptionPane.showMessageDialog(null, "Erreur JDBC : " + ex.getMessage());

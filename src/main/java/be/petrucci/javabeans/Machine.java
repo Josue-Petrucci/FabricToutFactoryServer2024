@@ -3,6 +3,8 @@ package be.petrucci.javabeans;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import be.petrucci.dao.DAOFactory;
+
 public class Machine implements Serializable{
 	private static final long serialVersionUID = -1046535624725789699L;
 	private int id;
@@ -70,4 +72,47 @@ public class Machine implements Serializable{
 	}
 
 	public Machine() {}
+	
+	
+	
+	public Machine(int id, MachineType type, double size, MachineStatus status, Site site, Zone zone) {
+		this.id = id;
+		this.type = type;
+		this.size = size;
+		this.status = status;
+		this.site = site;
+		this.zones = new ArrayList<Zone>();
+		addZone(zone);
+	}
+	
+	public void addZone(Zone zone) {
+		if(!zones.contains(zone)) {
+			zones.add(zone);
+		}
+	}
+
+	public static ArrayList<Machine> getAllMachine(){
+		DAOFactory dao = new DAOFactory();
+		return dao.getMachineDAO().findAll();
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		Machine m = null;
+		if(obj == null || obj.getClass() == this.getClass()) {
+			return true;
+		}
+		
+		m = (Machine)obj;
+		if(m.getId() == this.getId() & m.getSite().getName().equals(this.getSite().getName())) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	@Override
+	public int hashCode() {
+		return this.hashCode();
+	}
 }
