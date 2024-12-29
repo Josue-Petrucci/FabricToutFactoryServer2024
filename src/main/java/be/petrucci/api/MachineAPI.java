@@ -71,19 +71,28 @@ public class MachineAPI {
 	        }
         	site.setZones(zones);
 
-	        if (type == null || size == 0 || status == null || site == null || zones == null) {
-	            return Response.status(Status.BAD_REQUEST).build();
+	        if (type == null || size == 0 || status == null || site == null || zones == null){
+	            return Response
+	            		.status(Status.BAD_REQUEST)
+	            		.build();
 	        }
 	        Machine machine = new Machine(0,type,size,status,site,zones);
 
 	        if (!machine.addMachine()) {
-	            return Response.status(Status.SERVICE_UNAVAILABLE).build();
+	            return Response
+	            		.status(Status.SERVICE_UNAVAILABLE)
+	            		.build();
 	        } else {
-	            return Response.status(Status.CREATED).build();
+	            return Response
+	            		.status(Status.CREATED)
+	            		.build();
 	        }
 	    }
 	    catch (JSONException ex) {
-	        return Response.status(Status.BAD_REQUEST).entity("Invalid JSON format").build();
+	        return Response
+	        		.status(Status.BAD_REQUEST)
+	        		.entity("Invalid JSON format")
+	        		.build();
 	    }
 	}
 }

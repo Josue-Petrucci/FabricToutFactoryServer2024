@@ -2,6 +2,7 @@ package be.petrucci.javabeans;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import be.petrucci.dao.DAOFactory;
 
 public class Zone implements Serializable {
 	private static final long serialVersionUID = -7817333198883984982L;
@@ -60,10 +61,17 @@ public class Zone implements Serializable {
 		this.site = site;
 	}
 	
+	//Methods
 	public void addMachine(Machine machine) {
 		if(!machines.contains(machine)) {
 			machines.add(machine);
 		}
+	}
+	
+	//DAO methods
+	public static ArrayList<Zone> getAllZones() {
+		DAOFactory dao = new DAOFactory();
+		return dao.getZoneDAO().findAll();
 	}
 	
 	@Override

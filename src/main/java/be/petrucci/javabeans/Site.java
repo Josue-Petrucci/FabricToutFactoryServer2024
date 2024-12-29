@@ -45,7 +45,7 @@ public class Site implements Serializable {
 	public void setFactory(Factory factory) {
 		this.factory = factory;
 	}
-
+	
 	public ArrayList<Zone> getZones() {
 		return zones;
 	}
