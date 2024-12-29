@@ -29,11 +29,16 @@ public class MachineAPI {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getAllMachine() {
-		ArrayList<Machine> machines = Machine.getAllMachine();
-		return Response
-				.status(Status.OK)
-				.entity(machines)
-				.build();
+		ArrayList<Machine> machineList = Machine.getAllMachines();
+        if (machineList == null) {
+            return Response
+            		.status(Status.NOT_FOUND)
+            		.build();
+        }
+        return Response
+        		.status(Status.OK)
+        		.entity(machineList)
+        		.build();
 	}
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)

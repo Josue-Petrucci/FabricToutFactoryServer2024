@@ -146,7 +146,7 @@ public class Machine implements Serializable{
 		return machineDAO.createMachineLocation(this.getId(), zoneId);
 	}
 
-	public static ArrayList<Machine> getAllMachine(){
+	public static ArrayList<Machine> getAllMachines(){
 		DAOFactory dao = new DAOFactory();
 		return dao.getMachineDAO().findAll();
 	}
