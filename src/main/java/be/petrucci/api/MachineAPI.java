@@ -3,6 +3,7 @@ package be.petrucci.api;
 import java.util.ArrayList;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -100,4 +101,61 @@ public class MachineAPI {
 	        		.build();
 	    }
 	}
+	@DELETE
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response deleteRecipe(String jsonData) {
+		try {
+	        JSONObject json = new JSONObject(jsonData);
+	        int id = json.getInt("id");
+	        
+	        JSONObject siteJson = json.getJSONObject("site");
+	        Site site = new Site(); 
+	        site.setId(siteJson.getInt("id"));
+	        site.setName(siteJson.getString("name"));
+		    site.setCity(siteJson.getString("city"));
+		    
+	        JSONObject factoryJson = siteJson.getJSONObject("factory");
+	        Factory factory = new Factory(
+	        	factoryJson.getInt("id"),
+	        	factoryJson.getString("name"),
+	        	site
+	        );
+	        site.setFactory(factory);
+        	
+	        JSONArray zonesJsonArray = json.getJSONArray("zones");
+	        ArrayList<Zone> zones = new ArrayList<>();
+        	for (int i = 0; i < zonesJsonArray.length(); i++) {
+	            JSONObject zoneJson = zonesJsonArray.getJSONObject(i);
+	            Zone zone = new Zone();
+	            zone.setId(zoneJson.getInt("id"));
+	            zone.setZoneLetter(zoneJson.getString("zoneLetter").charAt(0));
+	            zone.setDangerLevel(DangerLevel.valueOf(zoneJson.getString("dangerLevel")));
+	            zones.add(zone);
+	        }
+        	site.setZones(zones);
+
+	        if (id == 0 || zones == null){
+	            return Response
+	            		.status(Status.BAD_REQUEST)
+	            		.build();
+	        }
+	        Machine machine = new Machine(id,null,0,null,site,zones);
+
+	        if (!machine.deleteMachine()) {
+	        	return Response
+	        			.status(Status.NO_CONTENT)
+	        			.build();
+	        } else {
+	        	return Response
+	        			.status(Status.OK)
+	        			.build();
+	        }
+	    }
+	    catch (JSONException ex) {
+	        return Response
+	        		.status(Status.BAD_REQUEST)
+	        		.entity("Invalid JSON format")
+	        		.build();
+	    }
+    }
 }
