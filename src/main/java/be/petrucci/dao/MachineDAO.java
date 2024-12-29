@@ -43,8 +43,19 @@ public class MachineDAO extends DAO<Machine>{
 	}
 
 	public boolean delete(Machine obj) {
-		// TODO Auto-generated method stub
-		return false;
+		boolean success = false;
+        String query = "{ call DeleteMachine(?) }";
+
+        try (CallableStatement cs = this.conn.prepareCall(query)) {
+            cs.setInt(1, obj.getId());
+
+            cs.executeUpdate();
+            success = true;
+        } catch (SQLException e) {
+        	System.out.println(e.getMessage()+ "test recipe");
+        }
+
+        return success;
 	}
 
 	public boolean update(Machine obj) {
@@ -135,5 +146,20 @@ public class MachineDAO extends DAO<Machine>{
 			System.out.println(e.getMessage());
 		}
 		return success;
+	}
+	public boolean deleteMachineLocation(Machine obj, int zoneId) {
+		boolean success = false;
+        String query = "{ call DeleteMachineLocation(?,?) }";
+
+        try (CallableStatement cs = this.conn.prepareCall(query)) {
+            cs.setInt(1, obj.getId());
+            cs.setInt(2, zoneId);
+            cs.executeUpdate();
+            success = true;
+        } catch (SQLException e) {
+        	System.out.println(e.getMessage()+ "test recipe");
+        }
+
+        return success;
 	}
 }
