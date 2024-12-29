@@ -85,4 +85,10 @@ public class Zone implements Serializable {
 	public int hashCode() {
 		return this.hashCode();
 	}
+
+	@Override
+	public String toString() {
+		return "Zone [id=" + id + ", zoneLetter=" + zoneLetter 
+				+ ", dangerLevel=" + dangerLevel + "]";
+	}
 }

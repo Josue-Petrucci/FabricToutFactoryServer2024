@@ -2,6 +2,7 @@ package be.petrucci.javabeans;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 
 
 public class Maintenance implements Serializable {
@@ -89,4 +90,30 @@ public class Maintenance implements Serializable {
 	}
 	
 	public Maintenance() {}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(date, duration, id, instructions, machine, manager, report, status, worker);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Maintenance other = (Maintenance) obj;
+		return Objects.equals(date, other.date) && duration == other.duration && id == other.id
+				&& Objects.equals(instructions, other.instructions) && Objects.equals(machine, other.machine)
+				&& Objects.equals(manager, other.manager) && Objects.equals(report, other.report)
+				&& status == other.status && Objects.equals(worker, other.worker);
+	}
+
+	@Override
+	public String toString() {
+		return "Maintenance [id=" + id + ", date=" + date + ", duration=" + duration + ", instructions=" + instructions
+				+ ", report=" + report + ", status=" + status + "]";
+	}
 }

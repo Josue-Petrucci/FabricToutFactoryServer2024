@@ -41,7 +41,14 @@ public class Factory implements Serializable {
 		sites = new ArrayList<Site>();
 		addSite(site);
 	}
-	
+
+	public Factory(int id, String name, ArrayList<Site> sites) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.sites = sites;
+	}
+
 	public void addSite(Site site) {
 		if(!sites.contains(site)) {
 			sites.add(site);
@@ -66,5 +73,10 @@ public class Factory implements Serializable {
 	@Override
 	public int hashCode() {
 		return this.getName().hashCode();
+	}
+
+	@Override
+	public String toString() {
+		return "Factory [id=" + id + ", name=" + name + "]";
 	}
 }

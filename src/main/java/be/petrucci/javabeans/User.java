@@ -1,6 +1,7 @@
 package be.petrucci.javabeans;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public abstract class User implements Serializable {
 	private static final long serialVersionUID = -5407718036535653341L;
@@ -78,5 +79,30 @@ public abstract class User implements Serializable {
 		this.address = address;
 		this.matricule = matricule;
 		this.password = password;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(address, age, firstname, id, lastname, matricule, password);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		User other = (User) obj;
+		return Objects.equals(address, other.address) && age == other.age && Objects.equals(firstname, other.firstname)
+				&& id == other.id && Objects.equals(lastname, other.lastname)
+				&& Objects.equals(matricule, other.matricule) && Objects.equals(password, other.password);
+	}
+
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", lastname=" + lastname + ", firstname=" + firstname + ", age=" + age + ", address="
+				+ address + ", matricule=" + matricule + ", password=" + password + "]";
 	}
 }
