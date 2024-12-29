@@ -1,7 +1,9 @@
 package be.petrucci.dao;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import be.petrucci.javabeans.DangerLevel;
@@ -19,8 +21,22 @@ public class MachineDAO extends DAO<Machine>{
 
 	@Override
 	public boolean create(Machine obj) {
-		// TODO Auto-generated method stub
-		return false;
+		boolean success = false;
+		String query = "{ call AddMachine(?, ?, ?, ?) }";
+		try (CallableStatement cs = this.conn.prepareCall(query)) {
+            cs.setString(1, String.valueOf(obj.getType()));
+			cs.setDouble(2, obj.getSize());
+			cs.setString(3, String.valueOf(obj.getStatus()));
+			cs.registerOutParameter(4, java.sql.Types.INTEGER);
+			
+			cs.executeUpdate();
+			obj.setId(cs.getInt(4));
+			
+			success = true;
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+		return success;
 	}
 
 	@Override
@@ -85,5 +101,19 @@ public class MachineDAO extends DAO<Machine>{
 			}
 		}
 		return machines;
+	}
+	
+	public boolean createMachineLocation(int machineId, int zoneId) {
+		boolean success = false;
+		String query = "{ call AddMachineLocation(?, ?) }";
+		try (CallableStatement cs = this.conn.prepareCall(query)) {
+            cs.setInt(1, machineId);
+			cs.setInt(2, zoneId);
+			cs.executeUpdate(); 
+			success = true;
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+		return success;
 	}
 }

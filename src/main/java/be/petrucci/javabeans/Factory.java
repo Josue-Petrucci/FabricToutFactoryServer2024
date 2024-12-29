@@ -3,6 +3,8 @@ package be.petrucci.javabeans;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import be.petrucci.dao.DAOFactory;
+
 public class Factory implements Serializable {
 	private static final long serialVersionUID = -4655307262531040065L;
 	private int id;
@@ -24,7 +26,7 @@ public class Factory implements Serializable {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	public ArrayList<Site> getSites() {
 		return sites;
 	}
@@ -41,11 +43,25 @@ public class Factory implements Serializable {
 		sites = new ArrayList<Site>();
 		addSite(site);
 	}
-	
+
+	public Factory(int id, String name, ArrayList<Site> sites) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.sites = sites;
+	}
+
+	//Methods
 	public void addSite(Site site) {
 		if(!sites.contains(site)) {
 			sites.add(site);
 		}
+	}
+	
+	//DAO methods
+	public static ArrayList<Factory> getAllFactories() {
+		DAOFactory dao = new DAOFactory();
+		return dao.getFactoryDAO().findAll();
 	}
 	
 	@Override
@@ -66,5 +82,10 @@ public class Factory implements Serializable {
 	@Override
 	public int hashCode() {
 		return this.getName().hashCode();
+	}
+
+	@Override
+	public String toString() {
+		return "Factory [id=" + id + ", name=" + name + "]";
 	}
 }

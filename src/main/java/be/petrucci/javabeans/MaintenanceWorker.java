@@ -63,4 +63,13 @@ public class MaintenanceWorker extends User implements Serializable{
 	public int hashCode() {
 		return this.getFirstname().hashCode() + this.getLastname().hashCode();
 	}
+	
+	@Override
+	public String toString() {
+		return "MaintenanceWorker [id=" + getId() + ", lastname=" 
+				+ getLastname() + ", firstname=" 
+				+ getFirstname() + ", age=" + getAge() + ", address="
+				+ getAddress() + ", matricule=" + getMatricule() 
+				+ ", password=" + getPassword() + "]";
+	}
 }

@@ -45,7 +45,7 @@ public class Site implements Serializable {
 	public void setFactory(Factory factory) {
 		this.factory = factory;
 	}
-
+	
 	public ArrayList<Zone> getZones() {
 		return zones;
 	}
@@ -87,6 +87,43 @@ public class Site implements Serializable {
 		this.factory = new Factory(idFactory, nameFactory, this);
 	}
 	
+	public Site(int id, String name, String city, Factory factory, ArrayList<Zone> zones) {
+		this.id = id;
+		this.name = name;
+		this.city = city;
+		if(factory != null)
+			this.factory = factory;
+		else
+			throw new IllegalArgumentException("Site factory must not be null");
+		if(zones.size() >= 1)
+			this.zones = zones;
+		else
+			throw new IllegalArgumentException("Site zone list must not be empty");
+		this.machines = new ArrayList<Machine>();
+		this.listMaintenanceManagers = new ArrayList<MaintenanceManager>();
+		this.listMaintenanceWorkers = new ArrayList<MaintenanceWorker>();
+	}
+
+	public Site(int id, String name, String city, Factory factory, ArrayList<Zone> zones, ArrayList<Machine> machines,
+			ArrayList<MaintenanceManager> listMaintenanceManagers,
+			ArrayList<MaintenanceWorker> listMaintenanceWorkers) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.city = city;
+		if(factory != null)
+			this.factory = factory;
+		else
+			throw new IllegalArgumentException("Site factory must not be null");
+		if(zones.size() >= 1)
+			this.zones = zones;
+		else
+			throw new IllegalArgumentException("Site zone list must not be empty");
+		this.machines = machines;
+		this.listMaintenanceManagers = listMaintenanceManagers;
+		this.listMaintenanceWorkers = listMaintenanceWorkers;
+	}
+
 	public void addZone(Zone zone) {
 		if(!zones.contains(zone)) {
 			zones.add(zone);
@@ -111,5 +148,10 @@ public class Site implements Serializable {
 	@Override
 	public int hashCode() {
 		return this.getName().hashCode() + this.getCity().hashCode();
+	}
+
+	@Override
+	public String toString() {
+		return "Site [id=" + id + ", name=" + name + ", city=" + city + "]";
 	}
 }

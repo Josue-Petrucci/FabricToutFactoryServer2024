@@ -3,7 +3,9 @@ package be.petrucci.javabeans;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import be.petrucci.connection.FabricToutConnection;
 import be.petrucci.dao.DAOFactory;
+import be.petrucci.dao.MachineDAO;
 
 public class Machine implements Serializable{
 	private static final long serialVersionUID = -1046535624725789699L;
@@ -73,8 +75,6 @@ public class Machine implements Serializable{
 
 	public Machine() {}
 	
-	
-	
 	public Machine(int id, MachineType type, double size, MachineStatus status, Site site, Zone zone) {
 		this.id = id;
 		this.type = type;
@@ -84,11 +84,66 @@ public class Machine implements Serializable{
 		this.zones = new ArrayList<Zone>();
 		addZone(zone);
 	}
-	
+
+	public Machine(int id, MachineType type, double size, MachineStatus status, Site site, 
+			ArrayList<Zone> zones) {
+		this.id = id;
+		this.type = type;
+		this.size = size;
+		this.status = status;
+		this.site = site;
+		if(zones.size() >= 1)
+			this.zones = zones;
+		else
+			throw new IllegalArgumentException("Machine zone list must not be empty");
+		this.maintenance = new ArrayList<Maintenance>();
+	}
+
+	public Machine(int id, MachineType type, double size, MachineStatus status, Site site, ArrayList<Zone> zones,
+			ArrayList<Maintenance> maintenance) {
+		this.id = id;
+		this.type = type;
+		this.size = size;
+		this.status = status;
+		this.site = site;
+		if(zones.size() >= 1)
+			this.zones = zones;
+		else
+			throw new IllegalArgumentException("Machine zone list must not be empty");
+		this.maintenance = maintenance;
+	}
+
+	//Methods
 	public void addZone(Zone zone) {
 		if(!zones.contains(zone)) {
 			zones.add(zone);
 		}
+	}
+	
+	public boolean addMachine() {
+		DAOFactory daofact = new DAOFactory();
+		MachineDAO machineDAO = new MachineDAO(FabricToutConnection.getInstance());
+    	if (!createMachine(daofact)) {
+	        return false;
+	    }
+    	if (this.getId()== 0) {
+	        return false;
+	    }
+	    for(Zone zone : this.getZones()) {
+    		if (!createMachineLocation(machineDAO, zone.getId())) {
+    	        return false;
+    	    }
+	    }
+	    return true;
+	}
+	
+	//DAO methods
+	public boolean createMachine(DAOFactory daofact) {
+		return daofact.getMachineDAO().create(this);
+	}
+	
+	public boolean createMachineLocation(MachineDAO machineDAO, int zoneId) {
+		return machineDAO.createMachineLocation(this.getId(), zoneId);
 	}
 
 	public static ArrayList<Machine> getAllMachine(){
@@ -115,4 +170,10 @@ public class Machine implements Serializable{
 	public int hashCode() {
 		return this.hashCode();
 	}
+
+	@Override
+	public String toString() {
+		return "Machine [id=" + id + ", type=" + type + ", size=" + size + ", status=" + status + "]";
+	}
+	
 }
