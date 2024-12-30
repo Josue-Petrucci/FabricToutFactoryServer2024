@@ -2,7 +2,7 @@ package be.petrucci.javabeans;
 
 public enum MachineStatus {
 	Working,
-	MantenanceRequeride,
+	MaintenanceRequired,
 	OnOrder,
 	OutofOrder
 }

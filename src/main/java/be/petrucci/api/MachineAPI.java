@@ -103,43 +103,17 @@ public class MachineAPI {
 	}
 	@DELETE
     @Produces(MediaType.APPLICATION_JSON)
-    public Response deleteRecipe(String jsonData) {
+    public Response deleteMachine(String jsonData) {
 		try {
 	        JSONObject json = new JSONObject(jsonData);
 	        int id = json.getInt("id");
-	        
-	        JSONObject siteJson = json.getJSONObject("site");
-	        Site site = new Site(); 
-	        site.setId(siteJson.getInt("id"));
-	        site.setName(siteJson.getString("name"));
-		    site.setCity(siteJson.getString("city"));
-		    
-	        JSONObject factoryJson = siteJson.getJSONObject("factory");
-	        Factory factory = new Factory(
-	        	factoryJson.getInt("id"),
-	        	factoryJson.getString("name"),
-	        	site
-	        );
-	        site.setFactory(factory);
-        	
-	        JSONArray zonesJsonArray = json.getJSONArray("zones");
-	        ArrayList<Zone> zones = new ArrayList<>();
-        	for (int i = 0; i < zonesJsonArray.length(); i++) {
-	            JSONObject zoneJson = zonesJsonArray.getJSONObject(i);
-	            Zone zone = new Zone();
-	            zone.setId(zoneJson.getInt("id"));
-	            zone.setZoneLetter(zoneJson.getString("zoneLetter").charAt(0));
-	            zone.setDangerLevel(DangerLevel.valueOf(zoneJson.getString("dangerLevel")));
-	            zones.add(zone);
-	        }
-        	site.setZones(zones);
-
-	        if (id == 0 || zones == null){
+	        if (id == 0){
 	            return Response
 	            		.status(Status.BAD_REQUEST)
 	            		.build();
 	        }
-	        Machine machine = new Machine(id,null,0,null,site,zones);
+	        Machine machine = new Machine();
+	        machine.setId(json.getInt("id"));
 
 	        if (!machine.deleteMachine()) {
 	        	return Response
