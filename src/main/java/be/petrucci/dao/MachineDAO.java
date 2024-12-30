@@ -37,7 +37,7 @@ public class MachineDAO extends DAO<Machine>{
 			
 			success = true;
 		} catch (SQLException e) {
-			System.out.println(e.getMessage());
+			e.printStackTrace();
 		}
 		return success;
 	}
@@ -52,9 +52,8 @@ public class MachineDAO extends DAO<Machine>{
             cs.executeUpdate();
             success = true;
         } catch (SQLException e) {
-        	System.out.println(e.getMessage()+ "test recipe");
+        	e.printStackTrace();
         }
-
         return success;
 	}
 
@@ -143,23 +142,21 @@ public class MachineDAO extends DAO<Machine>{
 			cs.executeUpdate(); 
 			success = true;
 		} catch (SQLException e) {
-			System.out.println(e.getMessage());
+			e.printStackTrace();
 		}
 		return success;
 	}
-	public boolean deleteMachineLocation(Machine obj, int zoneId) {
+	public boolean deleteMachineLocation(Machine obj) {
 		boolean success = false;
-        String query = "{ call DeleteMachineLocation(?,?) }";
+        String query = "{ call DeleteMachineLocation(?) }";
 
         try (CallableStatement cs = this.conn.prepareCall(query)) {
             cs.setInt(1, obj.getId());
-            cs.setInt(2, zoneId);
             cs.executeUpdate();
             success = true;
         } catch (SQLException e) {
-        	System.out.println(e.getMessage()+ "test recipe");
+        	e.printStackTrace();
         }
-
         return success;
 	}
 }

@@ -4,6 +4,10 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
+import be.petrucci.connection.FabricToutConnection;
+import be.petrucci.dao.DAOFactory;
+import be.petrucci.dao.MaintenanceDAO;
+
 
 public class Maintenance implements Serializable {
 	private static final long serialVersionUID = 6578454947386542915L;
@@ -90,7 +94,29 @@ public class Maintenance implements Serializable {
 	}
 	
 	public Maintenance() {}
-
+	
+	//Methods
+	public boolean deleteMaintenance() {
+		DAOFactory daofact = new DAOFactory();
+		MaintenanceDAO maintenanceDAO = new MaintenanceDAO(FabricToutConnection.getInstance());
+		if (!deleteWorkerMaintenance(maintenanceDAO)) {
+	        return false;
+	    }
+    	if (!deleteMaintenance(daofact)) {
+	        return false;
+	    }
+	    return true;
+	}
+	
+	//DAO methods
+	public boolean deleteMaintenance(DAOFactory daofact) {
+		return daofact.getMaintenanceDAO().delete(this);
+	}
+	
+	public boolean deleteWorkerMaintenance(MaintenanceDAO maintenanceDAO) {
+		return maintenanceDAO.deleteWorkerMaintenance(this);
+	}
+	
 	@Override
 	public int hashCode() {
 		return Objects.hash(date, duration, id, instructions, machine, manager, report, status, worker);

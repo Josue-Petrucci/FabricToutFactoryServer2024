@@ -140,13 +140,8 @@ public class Machine implements Serializable{
 	public boolean deleteMachine() {
 		DAOFactory daofact = new DAOFactory();
 		MachineDAO machineDAO = new MachineDAO(FabricToutConnection.getInstance());
-		if(this.getZones() == null) {
-			return false;
-		}
-	    for(Zone zone : this.getZones()) {
-    		if (!deleteMachineLocation(machineDAO, zone.getId())) {
-    	        return false;
-    	    }
+		if (!deleteMachineLocation(machineDAO)) {
+	        return false;
 	    }
     	if (!deleteMachine(daofact)) {
 	        return false;
@@ -167,8 +162,8 @@ public class Machine implements Serializable{
 		return daofact.getMachineDAO().delete(this);
 	}
 	
-	public boolean deleteMachineLocation(MachineDAO machineDAO, int zoneId) {
-		return machineDAO.deleteMachineLocation(this, zoneId);
+	public boolean deleteMachineLocation(MachineDAO machineDAO) {
+		return machineDAO.deleteMachineLocation(this);
 	}
 
 	public static ArrayList<Machine> getAllMachines(){
