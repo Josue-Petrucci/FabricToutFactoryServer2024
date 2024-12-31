@@ -1,9 +1,13 @@
 package be.petrucci.dao;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import be.petrucci.javabeans.User;
+import oracle.jdbc.OracleTypes;
 
 public class UserDAO extends DAO<User>{
 
@@ -11,31 +15,51 @@ public class UserDAO extends DAO<User>{
 		super(conn);
 	}
 
-	@Override
 	public boolean create(User obj) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
 	public boolean delete(User obj) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
 	public boolean update(User obj) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
 	public User find(User obj) {
-		// TODO Auto-generated method stub
-		return null;
+		User user = new User();
+		user.setId(0);
+		
+	    String query = "{call Login(?,?,?)}";
+	    try (CallableStatement cs = this.conn.prepareCall(query)) {
+	        cs.setString(1, obj.getMatricule());
+	        cs.setString(2, obj.getPassword());
+	        cs.registerOutParameter(3, OracleTypes.CURSOR);
+
+	        cs.execute();
+
+	        try (ResultSet resultSet = (ResultSet) cs.getObject(3)) {
+	            if (resultSet.next()) {
+	            	user = new User(resultSet.getInt("user_id"),
+	            			resultSet.getString("user_lastname"),
+	            			resultSet.getString("user_firstname"),
+	            			resultSet.getInt("user_age"),
+	            			resultSet.getString("user_address"),
+	            			obj.getMatricule(),
+	            			obj.getPassword());
+	            }
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
+	    return user;
 	}
 
-	@Override
 	public ArrayList<User> findAll() {
 		// TODO Auto-generated method stub
 		return null;

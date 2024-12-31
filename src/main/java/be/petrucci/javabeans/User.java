@@ -3,7 +3,9 @@ package be.petrucci.javabeans;
 import java.io.Serializable;
 import java.util.Objects;
 
-public abstract class User implements Serializable {
+import be.petrucci.dao.DAOFactory;
+
+public class User implements Serializable {
 	private static final long serialVersionUID = -5407718036535653341L;
 	private int id;
 	private String lastname;
@@ -79,6 +81,30 @@ public abstract class User implements Serializable {
 		this.address = address;
 		this.matricule = matricule;
 		this.password = password;
+	}
+	
+	
+	//Methods
+	public static User login(User user) {
+		if ((user.getMatricule() != null && !user.getMatricule().equals("")) 
+				&& (user.getPassword() != null && !user.getPassword().equals("")) 
+				&& user.getLastname() == null && user.getFirstname() == null 
+				&& user.getAge() == 0 && user.getAddress() == null) {
+			User newUser = findUser(user);
+			return newUser;
+        }
+		else if (user.getLastname() == null || user.getFirstname() == null 
+				|| user.getAge() == 0 || user.getAddress() == null 
+				|| user.getMatricule() == null || user.getPassword() == null) {
+			return null;
+		}
+		return user;
+	}
+	
+	//DAO Methods
+	private static User findUser(User user) {
+		DAOFactory daofact = new DAOFactory();
+		return daofact.getUserDAO().find(user);
 	}
 
 	@Override
