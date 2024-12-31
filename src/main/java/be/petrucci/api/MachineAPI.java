@@ -77,7 +77,8 @@ public class MachineAPI {
 	        }
         	site.setZones(zones);
 
-	        if (type == null || size == 0 || status == null || site == null || zones == null){
+	        if (type == null || size == 0 || status == null ||
+	        		site == null || zones == null){
 	            return Response
 	            		.status(Status.BAD_REQUEST)
 	            		.build();
