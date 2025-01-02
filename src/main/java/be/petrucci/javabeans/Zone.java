@@ -4,12 +4,16 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import be.petrucci.dao.DAOFactory;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 public class Zone implements Serializable {
 	private static final long serialVersionUID = -7817333198883984982L;
 	private int id;
 	private char zoneLetter;
 	private DangerLevel dangerLevel;
+	@JsonBackReference
 	private Site site;
+	@JsonBackReference
 	private ArrayList<Machine> machines = new ArrayList<Machine>();
 	
 	public int getId() {
@@ -77,7 +81,7 @@ public class Zone implements Serializable {
 	@Override
 	public boolean equals(Object obj) {
 		Zone z = null;
-		if(obj == null || obj.getClass() == this.getClass()) {
+		if(obj == null || obj.getClass() != this.getClass()) {
 			return true;
 		}
 		

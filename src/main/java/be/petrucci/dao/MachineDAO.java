@@ -146,6 +146,7 @@ public class MachineDAO extends DAO<Machine>{
 		}
 		return success;
 	}
+	
 	public boolean deleteMachineLocation(Machine obj) {
 		boolean success = false;
         String query = "{ call DeleteMachineLocation(?) }";

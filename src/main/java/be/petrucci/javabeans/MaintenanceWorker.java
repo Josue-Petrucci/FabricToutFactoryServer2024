@@ -3,11 +3,15 @@ package be.petrucci.javabeans;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import com.fasterxml.jackson.annotation.*;
+
 import be.petrucci.dao.DAOFactory;
 
 public class MaintenanceWorker extends User implements Serializable{
 	private static final long serialVersionUID = -4939100544238173021L;
+	@JsonManagedReference
 	private Site site;
+	@JsonManagedReference
 	private ArrayList<Maintenance> maintenances = new ArrayList<Maintenance>();
 	
 	public Site getSite() {
@@ -33,7 +37,7 @@ public class MaintenanceWorker extends User implements Serializable{
 		this.site = site;
 	}
 	
-	public void addSite(Maintenance maintenance) {
+	public void addMaintenance(Maintenance maintenance) {
 		if(!maintenances.contains(maintenance)) {
 			maintenances.add(maintenance);
 		}
@@ -47,7 +51,7 @@ public class MaintenanceWorker extends User implements Serializable{
 	@Override
 	public boolean equals(Object obj) {
 		MaintenanceWorker w = null;
-		if(obj == null || obj.getClass() == this.getClass()) {
+		if(obj == null || obj.getClass() != this.getClass()) {
 			return true;
 		}
 		

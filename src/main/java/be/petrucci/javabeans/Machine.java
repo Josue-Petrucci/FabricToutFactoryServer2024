@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 import be.petrucci.connection.FabricToutConnection;
+import com.fasterxml.jackson.annotation.*;
+
 import be.petrucci.dao.DAOFactory;
 import be.petrucci.dao.MachineDAO;
 
@@ -13,8 +15,11 @@ public class Machine implements Serializable{
 	private MachineType type;
 	private double size;
 	private MachineStatus status;
+	@JsonManagedReference
 	private Site site;
+	@JsonManagedReference
 	private ArrayList<Zone> zones;
+	@JsonManagedReference
 	private ArrayList<Maintenance> maintenance = new ArrayList<Maintenance>();
 	
 	public int getId() {
@@ -174,7 +179,7 @@ public class Machine implements Serializable{
 	@Override
 	public boolean equals(Object obj) {
 		Machine m = null;
-		if(obj == null || obj.getClass() == this.getClass()) {
+		if(obj == null || obj.getClass() != this.getClass()) {
 			return true;
 		}
 		

@@ -1,12 +1,14 @@
 package be.petrucci.javabeans;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.Objects;
 
 import be.petrucci.connection.FabricToutConnection;
 import be.petrucci.dao.DAOFactory;
 import be.petrucci.dao.MaintenanceDAO;
+import java.sql.Date;
+import java.util.ArrayList;
+
 
 
 public class Maintenance implements Serializable {
@@ -18,7 +20,7 @@ public class Maintenance implements Serializable {
 	private String report;
 	private MaintenanceStatus status;
 	private MaintenanceManager manager;
-	private MaintenanceWorker worker;
+	private ArrayList<MaintenanceWorker> workers;
 	private Machine machine;
 	
 	public int getId() {
@@ -77,12 +79,12 @@ public class Maintenance implements Serializable {
 		this.manager = manager;
 	}
 
-	public MaintenanceWorker getWorker() {
-		return worker;
+	public ArrayList<MaintenanceWorker> getWorkers() {
+		return workers;
 	}
 
-	public void setWorker(MaintenanceWorker worker) {
-		this.worker = worker;
+	public void setWorker(ArrayList<MaintenanceWorker> workers) {
+		this.workers = workers;
 	}
 
 	public Machine getMachine() {
@@ -95,18 +97,51 @@ public class Maintenance implements Serializable {
 	
 	public Maintenance() {}
 	
-	//Methods
-	public boolean deleteMaintenance() {
-		DAOFactory daofact = new DAOFactory();
-		MaintenanceDAO maintenanceDAO = new MaintenanceDAO(FabricToutConnection.getInstance());
-		if (!deleteWorkerMaintenance(maintenanceDAO)) {
-	        return false;
-	    }
-    	if (!deleteMaintenance(daofact)) {
-	        return false;
-	    }
-	    return true;
+	public Maintenance(int id, Date date, int duration, String instruction, String report, MaintenanceStatus status) {
+		this.id = id;
+		this.date = date;
+		this.duration = duration;
+		this.instructions = instruction;
+		this.report = report;
+		this.status = status;
 	}
+
+	public Maintenance(int id, Date date, int duration, String instructions, String report, MaintenanceStatus status,
+			MaintenanceManager manager, MaintenanceWorker worker, Machine machine) {
+		this(id, date, duration, instructions, report, status);
+		this.manager = manager;
+		this.machine = machine;
+		addWorker(worker);
+	}
+	
+	public Maintenance(Date date, int duration, String instruction, MaintenanceStatus status, Machine machine, MaintenanceManager manager, ArrayList<MaintenanceWorker> workers) {
+		this.date = date;
+		this.duration = duration;
+		this.instructions = instruction;
+		this.status = status;
+		this.machine = machine;
+		this.manager = manager;
+		this.workers = workers;
+	}
+	
+	public void addWorker(MaintenanceWorker worker) {
+		if(!workers.contains(worker)) {
+			workers.add(worker);
+		}
+	}
+
+	//Methods
+		public boolean deleteMaintenance() {
+			DAOFactory daofact = new DAOFactory();
+			MaintenanceDAO maintenanceDAO = new MaintenanceDAO(FabricToutConnection.getInstance());
+			if (!deleteWorkerMaintenance(maintenanceDAO)) {
+		        return false;
+		    }
+	    	if (!deleteMaintenance(daofact)) {
+		        return false;
+		    }
+		    return true;
+		}
 	
 	//DAO methods
 	public boolean deleteMaintenance(DAOFactory daofact) {
@@ -116,12 +151,12 @@ public class Maintenance implements Serializable {
 	public boolean deleteWorkerMaintenance(MaintenanceDAO maintenanceDAO) {
 		return maintenanceDAO.deleteWorkerMaintenance(this);
 	}
-	
-	@Override
-	public int hashCode() {
-		return Objects.hash(date, duration, id, instructions, machine, manager, report, status, worker);
+		
+	public boolean createMaintenance() {
+		DAOFactory dao = new DAOFactory();
+		return dao.getMaintenanceDAO().create(this);
 	}
-
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -134,9 +169,14 @@ public class Maintenance implements Serializable {
 		return Objects.equals(date, other.date) && duration == other.duration && id == other.id
 				&& Objects.equals(instructions, other.instructions) && Objects.equals(machine, other.machine)
 				&& Objects.equals(manager, other.manager) && Objects.equals(report, other.report)
-				&& status == other.status && Objects.equals(worker, other.worker);
+				&& status == other.status && Objects.equals(workers, other.workers);
 	}
 
+	@Override
+	public int hashCode() {
+		return Objects.hash(date, duration, id, instructions, machine, manager, report, status, workers);
+	}
+	
 	@Override
 	public String toString() {
 		return "Maintenance [id=" + id + ", date=" + date + ", duration=" + duration + ", instructions=" + instructions
