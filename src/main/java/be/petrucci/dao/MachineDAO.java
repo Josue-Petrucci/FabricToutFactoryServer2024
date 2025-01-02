@@ -1,5 +1,6 @@
 package be.petrucci.dao;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -10,6 +11,7 @@ import be.petrucci.javabeans.MachineStatus;
 import be.petrucci.javabeans.MachineType;
 import be.petrucci.javabeans.Site;
 import be.petrucci.javabeans.Zone;
+import oracle.jdbc.OracleTypes;
 
 public class MachineDAO extends DAO<Machine>{
 
@@ -43,16 +45,22 @@ public class MachineDAO extends DAO<Machine>{
 
 	@Override
 	public ArrayList<Machine> findAll() {
+		Machine m = null;
 		ArrayList<Machine> machines = new ArrayList<Machine>();
+		CallableStatement cstmt = null;
+	    ResultSet rs = null;
+	    
 		try {
-			String query = "SELECT machine_id, machine_type, machine_size, machine_status, zone_id, zone_letter, zone_danger_level, "
-					+ "site_id, site_name, site_city, factory_id, factory_name "
-					+ "FROM Machine M, Zone Z, Site S, Factory F "
-					+ "WHERE M.zone_id_FK=Z.zone_id AND Z.site_id_FK=S.site_id AND S.factory_id_FK=F.factory_id";
-			pst = conn.prepareStatement(query);
-			
-			ResultSet rs = pst.executeQuery();
+	        String query = "{CALL SeeAllMachines(?)}";
+	        cstmt = conn.prepareCall(query);
+	        cstmt.registerOutParameter(1, OracleTypes.CURSOR);
+	        cstmt.execute();
+	        rs = (ResultSet) cstmt.getObject(1);
+	        
+	        int lastid = -1;
 			while(rs.next()){
+				int currentId = rs.getInt("machine_id");
+				
 				Site s = new Site(
 						rs.getInt("site_id"),
 						rs.getString("site_name"),
@@ -65,21 +73,27 @@ public class MachineDAO extends DAO<Machine>{
 						rs.getString("zone_letter").charAt(0),
 						DangerLevel.valueOf(rs.getString("zone_danger_level")),
 						s);
-				
-				Machine m = new Machine(
-						rs.getInt("machine_id"),
-						MachineType.valueOf(rs.getString("machine_type")),
-						rs.getDouble("machine_size"),
-						MachineStatus.valueOf(rs.getString("machine_status")),
-						s, z);
-				
-				machines.add(m);
+					            
+	            if (currentId == lastid && m != null) {
+	                m.addZone(z);
+	            } else {
+	                m = new Machine(
+	                    currentId,
+	                    MachineType.valueOf(rs.getString("machine_type")),
+	                    rs.getDouble("machine_size"),
+	                    MachineStatus.valueOf(rs.getString("machine_status")),
+	                    s, z);
+
+	                machines.add(m);
+	            }
+	            lastid = currentId;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			try {
-				if (pst != null) pst.close();
+				if (rs != null) rs.close();
+				if (cstmt != null) cstmt.close();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

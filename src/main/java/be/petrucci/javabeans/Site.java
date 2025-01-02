@@ -3,13 +3,19 @@ package be.petrucci.javabeans;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 public class Site implements Serializable {
 	private static final long serialVersionUID = -2933081182814214954L;
 	private int id;
 	private String name;
 	private String city;
+	@JsonManagedReference
 	private Factory factory;
+	@JsonBackReference
 	private ArrayList<Zone> zones = new ArrayList<Zone>();
+	@JsonBackReference
 	private ArrayList<Machine> machines = new ArrayList<Machine>();
 	private ArrayList<MaintenanceManager> listMaintenanceManagers = new ArrayList<MaintenanceManager>();
 	private ArrayList<MaintenanceWorker> listMaintenanceWorkers = new ArrayList<MaintenanceWorker>();
@@ -96,7 +102,7 @@ public class Site implements Serializable {
 	@Override
 	public boolean equals(Object obj) {
 		Site s = null;
-		if(obj == null || obj.getClass() == this.getClass()) {
+		if(obj == null || obj.getClass() != this.getClass()) {
 			return true;
 		}
 		

@@ -1,7 +1,10 @@
 package be.petrucci.javabeans;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.sql.Date;
+import java.util.ArrayList;
+
+import be.petrucci.dao.DAOFactory;
 
 
 public class Maintenance implements Serializable {
@@ -13,7 +16,7 @@ public class Maintenance implements Serializable {
 	private String report;
 	private MaintenanceStatus status;
 	private MaintenanceManager manager;
-	private MaintenanceWorker worker;
+	private ArrayList<MaintenanceWorker> workers;
 	private Machine machine;
 	
 	public int getId() {
@@ -72,12 +75,12 @@ public class Maintenance implements Serializable {
 		this.manager = manager;
 	}
 
-	public MaintenanceWorker getWorker() {
-		return worker;
+	public ArrayList<MaintenanceWorker> getWorkers() {
+		return workers;
 	}
 
-	public void setWorker(MaintenanceWorker worker) {
-		this.worker = worker;
+	public void setWorker(ArrayList<MaintenanceWorker> workers) {
+		this.workers = workers;
 	}
 
 	public Machine getMachine() {
@@ -89,4 +92,62 @@ public class Maintenance implements Serializable {
 	}
 	
 	public Maintenance() {}
+	
+	public Maintenance(int id, Date date, int duration, String instruction, String report, MaintenanceStatus status) {
+		this.id = id;
+		this.date = date;
+		this.duration = duration;
+		this.instructions = instruction;
+		this.report = report;
+		this.status = status;
+	}
+
+	public Maintenance(int id, Date date, int duration, String instructions, String report, MaintenanceStatus status,
+			MaintenanceManager manager, MaintenanceWorker worker, Machine machine) {
+		this(id, date, duration, instructions, report, status);
+		this.manager = manager;
+		this.machine = machine;
+		addWorker(worker);
+	}
+	
+	public Maintenance(Date date, int duration, String instruction, MaintenanceStatus status, Machine machine, MaintenanceManager manager, ArrayList<MaintenanceWorker> workers) {
+		this.date = date;
+		this.duration = duration;
+		this.instructions = instruction;
+		this.status = status;
+		this.machine = machine;
+		this.manager = manager;
+		this.workers = workers;
+	}
+	
+	public void addWorker(MaintenanceWorker worker) {
+		if(!workers.contains(worker)) {
+			workers.add(worker);
+		}
+	}
+
+	public boolean createMaintenance() {
+		DAOFactory dao = new DAOFactory();
+		return dao.getMaintenanceDAO().create(this);
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		Maintenance m = null;
+		if(obj == null || obj.getClass() != this.getClass()) {
+			return true;
+		}
+		
+		m = (Maintenance)obj;
+		if(m.getId() == this.getId()) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	@Override
+	public int hashCode() {
+		return this.getInstructions().hashCode();
+	}
 }

@@ -3,10 +3,13 @@ package be.petrucci.javabeans;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import com.fasterxml.jackson.annotation.*;
+
 public class Factory implements Serializable {
 	private static final long serialVersionUID = -4655307262531040065L;
 	private int id;
 	private String name;
+	@JsonBackReference
 	private ArrayList<Site> sites;
 	
 	public int getId() {
@@ -51,7 +54,7 @@ public class Factory implements Serializable {
 	@Override
 	public boolean equals(Object obj) {
 		Factory f = null;
-		if(obj == null || obj.getClass() == this.getClass()) {
+		if(obj == null || obj.getClass() != this.getClass()) {
 			return true;
 		}
 		

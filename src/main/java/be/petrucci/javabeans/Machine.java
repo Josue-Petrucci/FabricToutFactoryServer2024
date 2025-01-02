@@ -3,6 +3,8 @@ package be.petrucci.javabeans;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import com.fasterxml.jackson.annotation.*;
+
 import be.petrucci.dao.DAOFactory;
 
 public class Machine implements Serializable{
@@ -11,8 +13,11 @@ public class Machine implements Serializable{
 	private MachineType type;
 	private double size;
 	private MachineStatus status;
+	@JsonManagedReference
 	private Site site;
+	@JsonManagedReference
 	private ArrayList<Zone> zones;
+	@JsonManagedReference
 	private ArrayList<Maintenance> maintenance = new ArrayList<Maintenance>();
 	
 	public int getId() {
@@ -73,8 +78,6 @@ public class Machine implements Serializable{
 
 	public Machine() {}
 	
-	
-	
 	public Machine(int id, MachineType type, double size, MachineStatus status, Site site, Zone zone) {
 		this.id = id;
 		this.type = type;
@@ -99,7 +102,7 @@ public class Machine implements Serializable{
 	@Override
 	public boolean equals(Object obj) {
 		Machine m = null;
-		if(obj == null || obj.getClass() == this.getClass()) {
+		if(obj == null || obj.getClass() != this.getClass()) {
 			return true;
 		}
 		
