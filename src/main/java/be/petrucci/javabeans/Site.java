@@ -134,15 +134,11 @@ public class Site implements Serializable {
 	public boolean equals(Object obj) {
 		Site s = null;
 		if(obj == null || obj.getClass() != this.getClass()) {
-			return true;
+			return false;
 		}
 		
 		s = (Site)obj;
-		if(s.getName().equals(this.getName()) & s.getCity().equals(this.getCity())) {
-			return true;
-		} else {
-			return false;
-		}
+		return s.getName().equals(this.getName()) && s.getCity().equals(this.getCity());
 	}
 	
 	@Override

@@ -123,7 +123,7 @@ public class MaintenanceAPI {
 
 	        Maintenance maintenance = new Maintenance(date, duration, instructions, status, machine, manager, workers);        
 	        if(!maintenance.createMaintenance()) {
-	        	Response.status(Status.INTERNAL_SERVER_ERROR.getStatusCode(), "Uneble to create a maintenance.").build();
+	        	return Response.status(Status.INTERNAL_SERVER_ERROR.getStatusCode(), "Unable to create a maintenance.").build();
 	        }
 	        
 	        return Response
