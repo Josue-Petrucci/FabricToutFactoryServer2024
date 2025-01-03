@@ -2,18 +2,13 @@ package be.petrucci.javabeans;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-
-import com.fasterxml.jackson.annotation.*;
-
 import be.petrucci.connection.FabricToutConnection;
 import be.petrucci.dao.DAOFactory;
 import be.petrucci.dao.MaintenanceWorkerDAO;
 
 public class MaintenanceWorker extends User implements Serializable{
 	private static final long serialVersionUID = -4939100544238173021L;
-	@JsonManagedReference
 	private Site site;
-	@JsonManagedReference
 	private ArrayList<Maintenance> maintenances = new ArrayList<Maintenance>();
 	
 	public Site getSite() {
