@@ -58,8 +58,18 @@ public class MachineDAO extends DAO<Machine>{
 	}
 
 	public boolean update(Machine obj) {
-		// TODO Auto-generated method stub
-		return false;
+		boolean success = false;
+		String query = "{ call UpdateMachineStatus(?, ?) }";
+
+		try (CallableStatement cs = this.conn.prepareCall(query)) {
+			cs.setInt(1, obj.getId());
+			cs.setString(2, String.valueOf(obj.getStatus()));
+			cs.executeUpdate();
+			success = true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return success;
 	}
 
 	public Machine find(Machine obj) {
