@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.sql.Date;
 
 import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -20,13 +19,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import be.petrucci.javabeans.Maintenance;
 import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import be.petrucci.javabeans.Machine;
 import be.petrucci.javabeans.MachineStatus;
 import be.petrucci.javabeans.MachineType;
-import be.petrucci.javabeans.Maintenance;
 import be.petrucci.javabeans.MaintenanceManager;
 import be.petrucci.javabeans.MaintenanceStatus;
 import be.petrucci.javabeans.MaintenanceWorker;
