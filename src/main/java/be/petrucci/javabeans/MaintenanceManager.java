@@ -4,6 +4,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import be.petrucci.connection.FabricToutConnection;
+import be.petrucci.dao.MaintenanceManagerDAO;
+
 public class MaintenanceManager extends User implements Serializable{
 	private static final long serialVersionUID = -9163803205862632545L;
 	private Site site;
@@ -26,6 +29,15 @@ public class MaintenanceManager extends User implements Serializable{
 	}
 
 	public MaintenanceManager() {}
+
+	public ArrayList<Maintenance> seeWorkInProgress() {
+		var maintenanceManagerDAO = new MaintenanceManagerDAO(FabricToutConnection.getInstance());
+		return seeWorkInProgress(maintenanceManagerDAO);
+	}
+
+	public ArrayList<Maintenance> seeWorkInProgress(MaintenanceManagerDAO maintenanceManagerDAO) {
+		return maintenanceManagerDAO.findWorkInProgress(this);
+	}
 
 	@Override
 	public int hashCode() {
