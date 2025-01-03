@@ -125,6 +125,7 @@ public class MaintenanceWorkerDAO extends DAO<MaintenanceWorker>{
 
 			try (ResultSet rs = (ResultSet)cs.getObject(1)) {
 				while (rs.next()) {
+					// TODO: implement maintenance retrieval
 					int zone_id = rs.getInt("zone_id");
 					char zone_letter = rs.getString("zone_letter").charAt(0);
 					DangerLevel zone_danger_level = DangerLevel.valueOf(rs.getString("zone_danger_level"));
@@ -171,7 +172,6 @@ public class MaintenanceWorkerDAO extends DAO<MaintenanceWorker>{
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-			return null;
 		}
 		list.addAll(maintenanceMap.values());
 		return list;

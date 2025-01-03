@@ -31,15 +31,9 @@ public class MaintenanceWorkerAPI {
 	public Response getWorkerWorkInProgress(@PathParam("id") int worker_id) {
 		MaintenanceWorker worker = new MaintenanceWorker();
 		worker.setId(worker_id);
-		var maintenances = worker.seeWorkInProgress();
-		if (maintenances == null) {
-			return Response
-					.status(Status.INTERNAL_SERVER_ERROR)
-					.build();
-		}
 		return Response
 				.status(Status.OK)
-				.entity(maintenances)
+				.entity(worker.seeWorkInProgress())
 				.build();
 	}
 }
