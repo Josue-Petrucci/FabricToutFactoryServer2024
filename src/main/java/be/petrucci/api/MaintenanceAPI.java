@@ -73,6 +73,7 @@ public class MaintenanceAPI {
 		try {
 			JSONObject json = new JSONObject(productJson);
 			
+			
 			long timestamp = json.getLong("date");
 	        LocalDate localDate = Instant.ofEpochMilli(timestamp)
 	                                     .atZone(ZoneId.systemDefault())
@@ -84,43 +85,42 @@ public class MaintenanceAPI {
 	        
 	        JSONObject managerJson = json.getJSONObject("manager");
 	        MaintenanceManager manager = new MaintenanceManager();
-	        manager.setId(managerJson.getInt("id"));
-	        manager.setLastname(managerJson.getString("lastname"));
-	        manager.setFirstname(managerJson.getString("firstname"));
-	        manager.setAge(managerJson.getInt("age"));
-	        manager.setAddress(managerJson.getString("address"));
-	        manager.setMatricule(managerJson.getString("matricule"));
-	        manager.setPassword(managerJson.getString("password"));
+	        manager.setId(managerJson.optInt("id", -1));
+	        manager.setLastname(managerJson.optString("lastname", ""));
+	        manager.setFirstname(managerJson.optString("firstname", ""));
+	        manager.setAge(managerJson.optInt("age", 0));
+	        manager.setAddress(managerJson.optString("address", ""));
+	        manager.setMatricule(managerJson.optString("matricule", ""));
+	        manager.setPassword(managerJson.optString("password", ""));
 	        
 	        JSONObject machineJson = json.getJSONObject("machine");
 	        Machine machine = new Machine();
-	        machine.setId(machineJson.getInt("id"));
-	        machine.setType(MachineType.valueOf(machineJson.getString("type")));
-	        machine.setSize(machineJson.getDouble("size"));
-	        machine.setStatus(MachineStatus.valueOf(machineJson.getString("status")));
+	        machine.setId(machineJson.optInt("id", -1));
+	        machine.setType(MachineType.valueOf(machineJson.optString("type", "UNKNOWN")));
+	        machine.setSize(machineJson.optDouble("size", 0.0));
+	        machine.setStatus(MachineStatus.valueOf(machineJson.optString("status", "UNKNOWN")));
 	        
 	        JSONArray workersArray = json.getJSONArray("workers");
 	        ArrayList<MaintenanceWorker> workers = new ArrayList<>();
-
+	        
 	        for (int i = 0; i < workersArray.length(); i++) {
 	            JSONObject workerJson = workersArray.getJSONObject(i);
 	            MaintenanceWorker worker = new MaintenanceWorker();
 
-	            worker.setId(workerJson.getInt("id"));
-	            worker.setLastname(workerJson.getString("lastname"));
-	            worker.setFirstname(workerJson.getString("firstname"));
-	            worker.setAge(workerJson.getInt("age"));
-	            worker.setAddress(workerJson.getString("address"));
-	            worker.setMatricule(workerJson.getString("matricule"));
-	            worker.setPassword(workerJson.getString("password"));
+	            worker.setId(workerJson.optInt("id", -1));
+	            worker.setLastname(workerJson.optString("lastname", ""));
+	            worker.setFirstname(workerJson.optString("firstname", ""));
+	            worker.setAge(workerJson.optInt("age", 0));
+	            worker.setAddress(workerJson.optString("address", ""));
+	            worker.setMatricule(workerJson.optString("matricule", ""));
+	            worker.setPassword(workerJson.optString("password", "")); 
 	            workers.add(worker);
 	        }
-
+	        
 	        Maintenance maintenance = new Maintenance(date, duration, instructions, status, machine, manager, workers);        
 	        if(!maintenance.createMaintenance()) {
 	        	return Response.status(Status.INTERNAL_SERVER_ERROR.getStatusCode(), "Unable to create a maintenance.").build();
 	        }
-	        
 	        return Response
 	        		.status(Status.CREATED)
 	                .type(MediaType.APPLICATION_JSON)
