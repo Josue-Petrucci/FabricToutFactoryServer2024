@@ -37,12 +37,12 @@ public class MaintenanceManager extends User implements Serializable{
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (!super.equals(obj))
+		}
+		if (!super.equals(obj) || getClass() != obj.getClass()) {
 			return false;
-		if (getClass() != obj.getClass())
-			return false;
+		}
 		MaintenanceManager other = (MaintenanceManager) obj;
 		return Objects.equals(maintenance, other.maintenance) && Objects.equals(site, other.site);
 	}

@@ -52,15 +52,11 @@ public class MaintenanceWorker extends User implements Serializable{
 	public boolean equals(Object obj) {
 		MaintenanceWorker w = null;
 		if(obj == null || obj.getClass() != this.getClass()) {
-			return true;
+			return false;
 		}
 		
 		w = (MaintenanceWorker)obj;
-		if(w.getFirstname().equals(this.getFirstname()) & w.getLastname().equals(this.getLastname())) {
-			return true;
-		} else {
-			return false;
-		}
+		return w.getFirstname().equals(this.getFirstname()) && w.getLastname().equals(this.getLastname());
 	}
 	
 	@Override
