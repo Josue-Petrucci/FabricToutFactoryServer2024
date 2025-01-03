@@ -2,13 +2,28 @@ package be.petrucci.dao;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 import java.sql.Types;
 import java.util.stream.Collectors;
 
+import be.petrucci.javabeans.DangerLevel;
+import be.petrucci.javabeans.Factory;
+import be.petrucci.javabeans.Machine;
+import be.petrucci.javabeans.MachineStatus;
+import be.petrucci.javabeans.MachineType;
 import be.petrucci.javabeans.Maintenance;
+import be.petrucci.javabeans.MaintenanceManager;
+import be.petrucci.javabeans.MaintenanceStatus;
+import be.petrucci.javabeans.MaintenanceWorker;
+import be.petrucci.javabeans.Site;
+import be.petrucci.javabeans.Zone;
+import oracle.jdbc.OracleTypes;
 
 public class MaintenanceDAO extends DAO<Maintenance>{
 
@@ -95,8 +110,137 @@ public class MaintenanceDAO extends DAO<Maintenance>{
 	}
 
 	public ArrayList<Maintenance> findAll() {
-		// TODO Auto-generated method stub
-		return null;
+		ArrayList<Maintenance> maintenances = new ArrayList<>();
+
+        Map<Integer, Factory> factoryMap = new HashMap<>();
+        Map<Integer, Site> siteMap = new HashMap<>();
+        Map<Integer, Zone> zoneMap = new HashMap<>();
+        Map<Integer, Machine> machineMap = new HashMap<>();
+        Map<Integer, Maintenance> maintenanceMap = new HashMap<>();
+
+        String query = "{CALL SeeAllMaintenance(?)}";
+
+        try (CallableStatement cs = this.conn.prepareCall(query)) {
+            cs.registerOutParameter(1, OracleTypes.CURSOR);
+            cs.execute();
+
+            try (ResultSet rs = (ResultSet) cs.getObject(1)) {
+                while (rs.next()) {
+                    int factoryId = rs.getInt("factory_id");
+                    String factoryName = rs.getString("factory_name");
+                    Factory factory = factoryMap.computeIfAbsent(factoryId, id -> {
+                        Factory f = new Factory();
+                        f.setId(factoryId);
+                        f.setName(factoryName);
+                        return f;
+                    });
+
+                    int siteId = rs.getInt("site_id");
+                    String siteName = rs.getString("site_name");
+                    String siteCity = rs.getString("site_city");
+                    Site site = siteMap.computeIfAbsent(siteId, id -> {
+                        Site s = new Site();
+                        s.setId(siteId);
+                        s.setName(siteName);
+                        s.setCity(siteCity);
+                        s.setFactory(factory);
+                        return s;
+                    });
+
+                    int zoneId = rs.getInt("zone_id");
+                    char zoneLetter = rs.getString("zone_letter").charAt(0);
+                    String zoneDangerLevel = rs.getString("zone_danger_level");
+                    Zone zone = zoneMap.computeIfAbsent(zoneId, id -> {
+                        Zone z = new Zone();
+                        z.setId(zoneId);
+                        z.setZoneLetter(zoneLetter);
+                        z.setDangerLevel(DangerLevel.valueOf(zoneDangerLevel));
+                        z.setSite(site);
+                        return z;
+                    });
+
+                    int machineId = rs.getInt("machine_id");
+                    String machineType = rs.getString("machine_type");
+                    double machineSize = rs.getDouble("machine_size");
+                    String machineStatus = rs.getString("machine_status");
+                    Machine machine = machineMap.computeIfAbsent(machineId, id -> {
+                        Machine m = new Machine();
+                        m.setId(machineId);
+                        m.setType(MachineType.valueOf(machineType));
+                        m.setSize(machineSize);
+                        m.setStatus(MachineStatus.valueOf(machineStatus));
+                        m.setZones(new ArrayList<>());
+                        return m;
+                    });
+                    
+                    Optional.ofNullable(machine).map(Machine::getZones) 
+                    .filter(zones -> zones.stream().noneMatch(z -> z.getId() == zone.getId())) 
+                    .ifPresent(zones -> zones.add(zone));
+                    
+                    int managerId = rs.getInt("manager_id");
+                    String managerLastname = rs.getString("manager_lastname");
+                    String managerFirstname = rs.getString("manager_firstname");
+                    int managerAge = rs.getInt("manager_age");
+                    String managerAddress = rs.getString("manager_address");
+                    String managerMatricule = rs.getString("manager_matricule");
+                    MaintenanceManager manager = new MaintenanceManager();
+                    manager.setId(managerId);
+                    manager.setLastname(managerLastname);
+                    manager.setFirstname(managerFirstname);
+                    manager.setAge(managerAge);
+                    manager.setAddress(managerAddress);
+                    manager.setMatricule(managerMatricule);
+
+                    int workerId = rs.getInt("worker_id");
+                    String workerLastname = rs.getString("worker_lastname");
+                    String workerFirstname = rs.getString("worker_firstname");
+                    int workerAge = rs.getInt("worker_age");
+                    String workerAddress = rs.getString("worker_address");
+                    String workerMatricule = rs.getString("worker_matricule");
+                    MaintenanceWorker worker = new MaintenanceWorker();
+                    worker.setId(workerId);
+                    worker.setLastname(workerLastname);
+                    worker.setFirstname(workerFirstname);
+                    worker.setAge(workerAge);
+                    worker.setAddress(workerAddress);
+                    worker.setMatricule(workerMatricule);
+
+                    try {
+                        Maintenance maintenance = (rs.getInt("maintenance_id") > 0)
+                            ? maintenanceMap.computeIfAbsent(rs.getInt("maintenance_id"), id -> {
+                                try {
+                                    return new Maintenance(
+                                        rs.getDate("maintenance_date"),
+                                        rs.getInt("maintenance_duration"),
+                                        rs.getString("maintenance_instructions"),
+                                        rs.getString("maintenance_report"),
+                                        MaintenanceStatus.valueOf(rs.getString("maintenance_status")),
+                                        machine,
+                                        manager,
+                                        new ArrayList<>(),
+                                        rs.getInt("maintenance_id")
+                                    );
+                                } catch (SQLException e) {
+                                    throw new RuntimeException("Erreur lors de la lecture des données de maintenance", e);
+                                }
+                            })
+                            : null;
+
+                        Optional.ofNullable(maintenance).ifPresent(m -> {
+                            m.getWorkers().add(worker);
+                        });
+
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        maintenances.addAll(maintenanceMap.values());
+        return maintenances;
 	}
 	
 	public boolean deleteWorkerMaintenance(Maintenance obj) {
