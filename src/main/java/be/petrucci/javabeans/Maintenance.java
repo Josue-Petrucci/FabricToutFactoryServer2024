@@ -9,8 +9,6 @@ import be.petrucci.dao.MaintenanceDAO;
 import java.sql.Date;
 import java.util.ArrayList;
 
-
-
 public class Maintenance implements Serializable {
 	private static final long serialVersionUID = 6578454947386542915L;
 	private int id;
