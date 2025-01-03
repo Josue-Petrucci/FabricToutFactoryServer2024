@@ -5,9 +5,7 @@ import java.util.ArrayList;
 
 import com.fasterxml.jackson.annotation.*;
 
-import be.petrucci.connection.FabricToutConnection;
 import be.petrucci.dao.DAOFactory;
-import be.petrucci.dao.MaintenanceWorkerDAO;
 
 public class MaintenanceWorker extends User implements Serializable{
 	private static final long serialVersionUID = -4939100544238173021L;
@@ -24,7 +22,7 @@ public class MaintenanceWorker extends User implements Serializable{
 		this.site = site;
 	}
 	
-	public ArrayList<Maintenance> getMaintenances() {
+	public ArrayList<Maintenance> getMaintenance() {
 		return maintenances;
 	}
 
@@ -50,15 +48,6 @@ public class MaintenanceWorker extends User implements Serializable{
 		return dao.getMaintenanceWorkerDAO().findAll();
 	}
 	
-	public ArrayList<Maintenance> seeWorkInProgress() {
-		var maintenanceWorkerDAO = new MaintenanceWorkerDAO(FabricToutConnection.getInstance());
-		return seeWorkInProgress(maintenanceWorkerDAO);
-	}
-
-	public ArrayList<Maintenance> seeWorkInProgress(MaintenanceWorkerDAO maintenanceWorkerDAO) {
-		return maintenanceWorkerDAO.findWorkInProgress(this);
-	}
-
 	@Override
 	public boolean equals(Object obj) {
 		MaintenanceWorker w = null;
@@ -69,7 +58,7 @@ public class MaintenanceWorker extends User implements Serializable{
 		w = (MaintenanceWorker)obj;
 		return w.getFirstname().equals(this.getFirstname()) && w.getLastname().equals(this.getLastname());
 	}
-
+	
 	@Override
 	public int hashCode() {
 		return this.getFirstname().hashCode() + this.getLastname().hashCode();
