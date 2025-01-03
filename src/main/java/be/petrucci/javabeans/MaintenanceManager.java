@@ -3,6 +3,7 @@ package be.petrucci.javabeans;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Objects;
+import be.petrucci.dao.DAOFactory;
 
 public class MaintenanceManager extends User implements Serializable{
 	private static final long serialVersionUID = -9163803205862632545L;
@@ -26,6 +27,27 @@ public class MaintenanceManager extends User implements Serializable{
 	}
 
 	public MaintenanceManager() {}
+	
+	public MaintenanceManager(int id, String lastname, String firstname, int age, String address, String matricule,
+			String password, Site site, ArrayList<Maintenance> maintenanceList) {
+		super(id, lastname, firstname, age, address, matricule, password);
+		this.site = site;
+		this.maintenance = maintenanceList;
+	}
+	
+	//Methods
+	public boolean addMaintenanceManager() {
+		DAOFactory daofact = new DAOFactory();
+    	if (!createMaintenanceManager(daofact)) {
+	        return false;
+	    }
+	    return true;
+	}
+
+	//DAO methods
+	public boolean createMaintenanceManager(DAOFactory daofact) {
+		return daofact.getMaintenanceManagerDAO().create(this);
+	}
 
 	@Override
 	public int hashCode() {

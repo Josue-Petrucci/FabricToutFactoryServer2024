@@ -1,6 +1,8 @@
 package be.petrucci.dao;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import be.petrucci.javabeans.MaintenanceManager;
@@ -13,8 +15,23 @@ public class MaintenanceManagerDAO extends DAO<MaintenanceManager> {
 
 	@Override
 	public boolean create(MaintenanceManager obj) {
-		// TODO Auto-generated method stub
-		return false;
+		boolean success = false;
+		String query = "{ call AddEmployee(?, ?, ?, ?, ?, ?, ?) }";
+		try (CallableStatement cs = this.conn.prepareCall(query)) {
+            cs.setString(1, obj.getLastname());
+			cs.setString(2, obj.getFirstname());
+			cs.setInt(3, obj.getAge());
+			cs.setString(4, obj.getAddress());
+			cs.setString(5, obj.getMatricule());
+			cs.setString(6, obj.getPassword());
+			cs.setInt(7, obj.getSite().getId());
+			
+			cs.executeUpdate();
+			success = true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return success;
 	}
 
 	@Override
