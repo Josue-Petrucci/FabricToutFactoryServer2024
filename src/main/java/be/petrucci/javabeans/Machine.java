@@ -16,55 +16,55 @@ public class Machine implements Serializable{
 	private Site site;
 	private ArrayList<Zone> zones;
 	private ArrayList<Maintenance> maintenance = new ArrayList<Maintenance>();
-	
+
 	public int getId() {
 		return id;
 	}
-	
+
 	public void setId(int id) {
 		this.id = id;
 	}
-	
+
 	public MachineType getType() {
 		return type;
 	}
-	
+
 	public void setType(MachineType type) {
 		this.type = type;
 	}
-	
+
 	public double getSize() {
 		return size;
 	}
-	
+
 	public void setSize(double size) {
 		this.size = size;
 	}
-	
+
 	public MachineStatus getStatus() {
 		return status;
 	}
-	
+
 	public void setStatus(MachineStatus status) {
 		this.status = status;
 	}
-	
+
 	public Site getSite() {
 		return site;
 	}
-	
+
 	public void setSite(Site site) {
 		this.site = site;
 	}
-	
+
 	public ArrayList<Zone> getZones() {
 		return zones;
 	}
-	
+
 	public void setZones(ArrayList<Zone> zones) {
 		this.zones = zones;
 	}
-	
+
 	public ArrayList<Maintenance> getMaintenance() {
 		return maintenance;
 	}
@@ -74,7 +74,7 @@ public class Machine implements Serializable{
 	}
 
 	public Machine() {}
-	
+
 	public Machine(int id, MachineType type, double size, MachineStatus status, Site site, Zone zone) {
 		this.id = id;
 		this.type = type;
@@ -119,7 +119,7 @@ public class Machine implements Serializable{
 			zones.add(zone);
 		}
 	}
-	
+
 	public boolean addMachine() {
 		DAOFactory daofact = new DAOFactory();
 		MachineDAO machineDAO = new MachineDAO(FabricToutConnection.getInstance());
@@ -136,7 +136,7 @@ public class Machine implements Serializable{
 	    }
 	    return true;
 	}
-	
+
 	public boolean deleteMachine() {
 		DAOFactory daofact = new DAOFactory();
 		MachineDAO machineDAO = new MachineDAO(FabricToutConnection.getInstance());
@@ -148,20 +148,20 @@ public class Machine implements Serializable{
 	    }
 	    return true;
 	}
-	
+
 	//DAO methods
 	public boolean createMachine(DAOFactory daofact) {
 		return daofact.getMachineDAO().create(this);
 	}
-	
+
 	public boolean createMachineLocation(MachineDAO machineDAO, int zoneId) {
 		return machineDAO.createMachineLocation(this.getId(), zoneId);
 	}
-	
+
 	public boolean deleteMachine(DAOFactory daofact) {
 		return daofact.getMachineDAO().delete(this);
 	}
-	
+
 	public boolean deleteMachineLocation(MachineDAO machineDAO) {
 		return machineDAO.deleteMachineLocation(this);
 	}
@@ -170,7 +170,16 @@ public class Machine implements Serializable{
 		DAOFactory dao = new DAOFactory();
 		return dao.getMachineDAO().findAll();
 	}
-	
+
+	public boolean updateMachine() {
+		DAOFactory daofact = new DAOFactory();
+		return updateMachine(daofact);
+	}
+
+	public boolean updateMachine(DAOFactory daofact) {
+		return daofact.getMachineDAO().update(this);
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		Machine m = null;
@@ -185,7 +194,7 @@ public class Machine implements Serializable{
 			return false;
 		}
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return this.hashCode();
