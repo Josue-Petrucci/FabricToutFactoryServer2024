@@ -67,15 +67,11 @@ public class Factory implements Serializable {
 	public boolean equals(Object obj) {
 		Factory f = null;
 		if(obj == null || obj.getClass() != this.getClass()) {
-			return true;
+			return false;
 		}
 		
 		f = (Factory)obj;
-		if(f.getName().equals(this.getName())) {
-			return true;
-		} else {
-			return false;
-		}
+		return f.getName().equals(this.getName());
 	}
 	
 	@Override
