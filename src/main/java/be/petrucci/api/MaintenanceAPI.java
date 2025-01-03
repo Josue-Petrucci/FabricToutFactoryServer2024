@@ -9,7 +9,9 @@ import java.sql.Date;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -130,6 +132,37 @@ public class MaintenanceAPI {
 			return Response.status(Status.BAD_REQUEST.getStatusCode(), e.getMessage()).build();
 		}catch (IllegalArgumentException e) {
 			return Response.status(Status.BAD_REQUEST.getStatusCode(), e.getMessage()).build();
+		}
+	}
+
+	@PUT
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response updateMaintenance(String jsonData) {
+		try {
+			var json = new JSONObject(jsonData);
+			var maintenance = new Maintenance(
+				json.getInt("id"),
+				new Date(json.getLong("date")),
+				json.getInt("duration"),
+				json.getString("instructions"),
+				json.getString("report"),
+				MaintenanceStatus.valueOf(json.getString("status"))
+			);
+			if (!maintenance.updateMaintenance()) {
+				return Response
+						.status(Status.INTERNAL_SERVER_ERROR)
+						.entity(maintenance)
+						.build();
+			}
+			return Response
+					.status(Status.OK)
+					.build();
+		} catch (JSONException e) {
+			e.printStackTrace();
+			return Response
+					.status(Status.BAD_REQUEST)
+					.build();
 		}
 	}
 }
