@@ -131,17 +131,11 @@ public class Maintenance implements Serializable {
 	}
 
 	//Methods
-		public boolean deleteMaintenance() {
-			DAOFactory daofact = new DAOFactory();
-			MaintenanceDAO maintenanceDAO = new MaintenanceDAO(FabricToutConnection.getInstance());
-			if (!deleteWorkerMaintenance(maintenanceDAO)) {
-		        return false;
-		    }
-	    	if (!deleteMaintenance(daofact)) {
-		        return false;
-		    }
-		    return true;
-		}
+	public boolean deleteMaintenance() {
+		DAOFactory daofact = new DAOFactory();
+		MaintenanceDAO maintenanceDAO = new MaintenanceDAO(FabricToutConnection.getInstance());
+		return deleteWorkerMaintenance(maintenanceDAO) && deleteMaintenance(daofact);
+	}
 	
 	//DAO methods
 	public boolean deleteMaintenance(DAOFactory daofact) {
@@ -159,12 +153,12 @@ public class Maintenance implements Serializable {
 	
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null || getClass() != obj.getClass()) {
 			return false;
-		if (getClass() != obj.getClass())
-			return false;
+		}
 		Maintenance other = (Maintenance) obj;
 		return Objects.equals(date, other.date) && duration == other.duration && id == other.id
 				&& Objects.equals(instructions, other.instructions) && Objects.equals(machine, other.machine)

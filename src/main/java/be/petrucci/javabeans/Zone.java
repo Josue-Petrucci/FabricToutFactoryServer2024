@@ -82,15 +82,11 @@ public class Zone implements Serializable {
 	public boolean equals(Object obj) {
 		Zone z = null;
 		if(obj == null || obj.getClass() != this.getClass()) {
-			return true;
+			return false;
 		}
 		
 		z = (Zone)obj;
-		if(z.getId() == this.getId() ) {
-			return true;
-		} else {
-			return false;
-		}
+		return z.getId() == this.getId();
 	}
 	
 	@Override

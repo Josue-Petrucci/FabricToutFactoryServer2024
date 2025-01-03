@@ -92,8 +92,7 @@ public class User implements Serializable {
 				&& user.getAge() == 0 && user.getAddress() == null) {
 			User newUser = findUser(user);
 			return newUser;
-        }
-		else if (user.getLastname() == null || user.getFirstname() == null 
+        } else if (user.getLastname() == null || user.getFirstname() == null 
 				|| user.getAge() == 0 || user.getAddress() == null 
 				|| user.getMatricule() == null || user.getPassword() == null) {
 			return null;
@@ -114,12 +113,12 @@ public class User implements Serializable {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null || getClass() != obj.getClass()) {
 			return false;
-		if (getClass() != obj.getClass())
-			return false;
+		}
 		User other = (User) obj;
 		return Objects.equals(address, other.address) && age == other.age && Objects.equals(firstname, other.firstname)
 				&& id == other.id && Objects.equals(lastname, other.lastname)

@@ -128,10 +128,7 @@ public class Machine implements Serializable{
 	public boolean addMachine() {
 		DAOFactory daofact = new DAOFactory();
 		MachineDAO machineDAO = new MachineDAO(FabricToutConnection.getInstance());
-    	if (!createMachine(daofact)) {
-	        return false;
-	    }
-    	if (this.getId()== 0) {
+    	if (this.getId() == 0 || !createMachine(daofact)) {
 	        return false;
 	    }
 	    for(Zone zone : this.getZones()) {
@@ -145,13 +142,7 @@ public class Machine implements Serializable{
 	public boolean deleteMachine() {
 		DAOFactory daofact = new DAOFactory();
 		MachineDAO machineDAO = new MachineDAO(FabricToutConnection.getInstance());
-		if (!deleteMachineLocation(machineDAO)) {
-	        return false;
-	    }
-    	if (!deleteMachine(daofact)) {
-	        return false;
-	    }
-	    return true;
+		return deleteMachineLocation(machineDAO) && deleteMachine(daofact);
 	}
 	
 	//DAO methods
@@ -180,15 +171,11 @@ public class Machine implements Serializable{
 	public boolean equals(Object obj) {
 		Machine m = null;
 		if(obj == null || obj.getClass() != this.getClass()) {
-			return true;
+			return false;
 		}
 		
 		m = (Machine)obj;
-		if(m.getId() == this.getId() & m.getSite().getName().equals(this.getSite().getName())) {
-			return true;
-		} else {
-			return false;
-		}
+		return m.getId() == this.getId() && m.getSite().getName().equals(this.getSite().getName());
 	}
 	
 	@Override
