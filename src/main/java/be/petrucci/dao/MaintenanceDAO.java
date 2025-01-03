@@ -72,8 +72,21 @@ public class MaintenanceDAO extends DAO<Maintenance>{
 	}
 
 	public boolean update(Maintenance obj) {
-		// TODO Auto-generated method stub
-		return false;
+		boolean success = false;
+		final String query = "{ call UpdateMaintenance(?, ?, ?, ?, ?, ?) }";
+		try (CallableStatement cs = this.conn.prepareCall(query)) {
+			cs.setInt(1, obj.getId());
+			cs.setDate(2, obj.getDate());
+			cs.setInt(3, obj.getDuration());
+			cs.setString(4, obj.getInstructions());
+			cs.setString(5, obj.getReport());
+			cs.setString(6, String.valueOf(obj.getStatus()));
+			cs.executeUpdate();
+			success = true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return success;
 	}
 
 	public Maintenance find(Maintenance obj) {
