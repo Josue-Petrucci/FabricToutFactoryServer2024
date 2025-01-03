@@ -148,7 +148,12 @@ public class Maintenance implements Serializable {
 		DAOFactory dao = new DAOFactory();
 		return dao.getMaintenanceDAO().create(this);
 	}
-	
+
+	public boolean updateMaintenance() {
+		DAOFactory daofact = new DAOFactory();
+		return daofact.getMaintenanceDAO().update(this);
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
