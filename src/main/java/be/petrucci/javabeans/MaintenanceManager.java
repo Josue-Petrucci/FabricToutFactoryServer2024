@@ -35,6 +35,10 @@ public class MaintenanceManager extends User implements Serializable{
 		this.maintenance = maintenanceList;
 	}
 	
+	public MaintenanceManager(int id) {
+		this.setId(id);
+	}
+	
 	//Methods
 	public boolean addMaintenanceManager() {
 		DAOFactory daofact = new DAOFactory();
@@ -48,6 +52,12 @@ public class MaintenanceManager extends User implements Serializable{
 	public boolean createMaintenanceManager(DAOFactory daofact) {
 		return daofact.getMaintenanceManagerDAO().create(this);
 	}
+	
+	public static MaintenanceManager getManagerDetail(MaintenanceManager manager) {
+		DAOFactory dao = new DAOFactory();
+		return dao.getMaintenanceManagerDAO().find(manager);
+	}
+	
 
 	@Override
 	public int hashCode() {
