@@ -16,17 +16,14 @@ public class UserDAO extends DAO<User>{
 	}
 
 	public boolean create(User obj) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	public boolean delete(User obj) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	public boolean update(User obj) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
@@ -61,7 +58,6 @@ public class UserDAO extends DAO<User>{
 	}
 
 	public ArrayList<User> findAll() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

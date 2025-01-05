@@ -13,6 +13,22 @@ public class Admin extends User implements Serializable {
 	}
 	
 	@Override
+	public int hashCode() {
+		return super.hashCode();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		return true;
+	}
+
+	@Override
 	public String toString() {
 		return "Admin [id=" + getId() + ", lastname=" + getLastname() + ", firstname=" 
 				+ getFirstname() + ", age=" + getAge() + ", address="

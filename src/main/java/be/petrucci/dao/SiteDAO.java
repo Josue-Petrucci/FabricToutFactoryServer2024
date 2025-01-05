@@ -21,22 +21,18 @@ public class SiteDAO extends DAO<Site>{
 	}
 
 	public boolean create(Site obj) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	public boolean delete(Site obj) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	public boolean update(Site obj) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	public Site find(Site obj) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

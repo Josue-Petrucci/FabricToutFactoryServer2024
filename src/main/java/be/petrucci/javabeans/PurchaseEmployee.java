@@ -11,6 +11,23 @@ public class PurchaseEmployee extends User implements Serializable{
 			String password) {
 		super(id, lastname, firstname, age, address, matricule, password);
 	}
+	
+	@Override
+	public int hashCode() {
+		return super.hashCode();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		return true;
+	}
+
 	@Override
 	public String toString() {
 		return "PurchaseEmployee [id=" + getId() + ", lastname=" 

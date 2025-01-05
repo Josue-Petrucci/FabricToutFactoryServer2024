@@ -21,22 +21,18 @@ public class ZoneDAO extends DAO<Zone>{
 	}
 
 	public boolean create(Zone obj) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	public boolean delete(Zone obj) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	public boolean update(Zone obj) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	public Zone find(Zone obj) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

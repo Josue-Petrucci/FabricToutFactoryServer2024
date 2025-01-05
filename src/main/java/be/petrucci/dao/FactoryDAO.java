@@ -21,22 +21,18 @@ public class FactoryDAO extends DAO<Factory>{
 	}
 
 	public boolean create(Factory obj) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	public boolean delete(Factory obj) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	public boolean update(Factory obj) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	public Factory find(Factory obj) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

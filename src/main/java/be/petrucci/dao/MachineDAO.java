@@ -73,7 +73,6 @@ public class MachineDAO extends DAO<Machine>{
 	}
 
 	public Machine find(Machine obj) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

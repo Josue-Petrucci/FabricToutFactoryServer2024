@@ -22,22 +22,18 @@ public class MaintenanceWorkerDAO extends DAO<MaintenanceWorker>{
 	}
 
 	public boolean create(MaintenanceWorker obj) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	public boolean delete(MaintenanceWorker obj) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	public boolean update(MaintenanceWorker obj) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	public MaintenanceWorker find(MaintenanceWorker obj) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

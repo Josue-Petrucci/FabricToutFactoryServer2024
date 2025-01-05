@@ -19,7 +19,6 @@ public class MaintenanceManagerDAO extends DAO<MaintenanceManager> {
 		super(conn);
 	}
 
-	@Override
 	public boolean create(MaintenanceManager obj) {
 		boolean success = false;
 		String query = "{ call AddEmployee(?, ?, ?, ?, ?, ?, ?) }";
@@ -40,19 +39,14 @@ public class MaintenanceManagerDAO extends DAO<MaintenanceManager> {
 		return success;
 	}
 
-	@Override
 	public boolean delete(MaintenanceManager obj) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
 	public boolean update(MaintenanceManager obj) {
-		// TODO Auto-generated method stub
 		return false;
 	}
-	
-	@Override
+
 	public MaintenanceManager find(MaintenanceManager obj) {
 	    MaintenanceManager manager = null;
 
@@ -111,9 +105,7 @@ public class MaintenanceManagerDAO extends DAO<MaintenanceManager> {
 	    return manager;
 	}
 
-	@Override
 	public ArrayList<MaintenanceManager> findAll() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
