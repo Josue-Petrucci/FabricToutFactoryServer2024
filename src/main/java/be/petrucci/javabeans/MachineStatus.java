@@ -1,8 +1,5 @@
 package be.petrucci.javabeans;
 
 public enum MachineStatus {
-	Working,
-	MaintenanceRequired,
-	OnOrder,
-	OutofOrder
+	Working, MaintenanceRequired, OnOrder, OutofOrder
 }

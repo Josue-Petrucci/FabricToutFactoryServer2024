@@ -15,16 +15,11 @@ import be.petrucci.javabeans.Site;
 public class SiteAPI {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-    public Response getAllSites() {
-        ArrayList<Site> siteList = Site.getAllSites();
-        if (siteList == null) {
-            return Response
-            		.status(Status.NOT_FOUND)
-            		.build();
-        }
-        return Response
-        		.status(Status.OK)
-        		.entity(siteList)
-        		.build();
-    }
+	public Response getAllSites() {
+		ArrayList<Site> siteList = Site.getAllSites();
+		if (siteList == null) {
+			return Response.status(Status.NOT_FOUND).build();
+		}
+		return Response.status(Status.OK).entity(siteList).build();
+	}
 }

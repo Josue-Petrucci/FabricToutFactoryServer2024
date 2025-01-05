@@ -17,10 +17,7 @@ public class MaintenanceWorkerAPI {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getAllMaintenanceWorker() {
-		ArrayList<MaintenanceWorker> workers = MaintenanceWorker.getAllWorkers() ;
-		return Response
-				.status(Status.OK)
-				.entity(workers)
-				.build();
+		ArrayList<MaintenanceWorker> workers = MaintenanceWorker.getAllWorkers();
+		return Response.status(Status.OK).entity(workers).build();
 	}
 }

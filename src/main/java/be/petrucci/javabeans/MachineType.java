@@ -1,7 +1,5 @@
 package be.petrucci.javabeans;
 
 public enum MachineType {
-	Fabrication,
-	Assembly,
-	Sorting
+	Fabrication, Assembly, Sorting
 }

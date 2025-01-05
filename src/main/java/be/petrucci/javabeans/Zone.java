@@ -11,31 +11,31 @@ public class Zone implements Serializable {
 	private DangerLevel dangerLevel;
 	private Site site;
 	private ArrayList<Machine> machines = new ArrayList<Machine>();
-	
+
 	public int getId() {
 		return id;
 	}
-	
+
 	public void setId(int id) {
 		this.id = id;
 	}
-	
+
 	public char getZoneLetter() {
 		return zoneLetter;
 	}
-	
+
 	public void setZoneLetter(char zoneLetter) {
 		this.zoneLetter = zoneLetter;
 	}
-	
+
 	public DangerLevel getDangerLevel() {
 		return dangerLevel;
 	}
-	
+
 	public void setDangerLevel(DangerLevel dangerLevel) {
 		this.dangerLevel = dangerLevel;
 	}
-	
+
 	public Site getSite() {
 		return site;
 	}
@@ -43,7 +43,7 @@ public class Zone implements Serializable {
 	public void setSite(Site site) {
 		this.site = site;
 	}
-	
+
 	public ArrayList<Machine> getMachines() {
 		return machines;
 	}
@@ -51,40 +51,41 @@ public class Zone implements Serializable {
 	public void setMachines(ArrayList<Machine> machines) {
 		this.machines = machines;
 	}
-	
-	public Zone() {}
-	
+
+	public Zone() {
+	}
+
 	public Zone(int id, char zoneLetter, DangerLevel dangerLevel, Site site) {
 		this.id = id;
 		this.zoneLetter = zoneLetter;
 		this.dangerLevel = dangerLevel;
 		this.site = site;
 	}
-	
-	//Methods
+
+	// Methods
 	public void addMachine(Machine machine) {
-		if(!machines.contains(machine)) {
+		if (!machines.contains(machine)) {
 			machines.add(machine);
 		}
 	}
-	
-	//DAO methods
+
+	// DAO methods
 	public static ArrayList<Zone> getAllZones() {
 		DAOFactory dao = new DAOFactory();
 		return dao.getZoneDAO().findAll();
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
 		Zone z = null;
-		if(obj == null || obj.getClass() != this.getClass()) {
+		if (obj == null || obj.getClass() != this.getClass()) {
 			return false;
 		}
-		
-		z = (Zone)obj;
+
+		z = (Zone) obj;
 		return z.getId() == this.getId();
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return this.hashCode();
@@ -92,7 +93,6 @@ public class Zone implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Zone [id=" + id + ", zoneLetter=" + zoneLetter 
-				+ ", dangerLevel=" + dangerLevel + "]";
+		return "Zone [id=" + id + ", zoneLetter=" + zoneLetter + ", dangerLevel=" + dangerLevel + "]";
 	}
 }

@@ -14,64 +14,65 @@ public class User implements Serializable {
 	private String address;
 	private String matricule;
 	private String password;
-	
+
 	public int getId() {
 		return id;
 	}
-	
+
 	public void setId(int id) {
 		this.id = id;
 	}
-	
+
 	public String getLastname() {
 		return lastname;
 	}
-	
+
 	public void setLastname(String lastname) {
 		this.lastname = lastname;
 	}
-	
+
 	public String getFirstname() {
 		return firstname;
 	}
-	
+
 	public void setFirstname(String firstname) {
 		this.firstname = firstname;
 	}
-	
+
 	public int getAge() {
 		return age;
 	}
-	
+
 	public void setAge(int age) {
 		this.age = age;
 	}
-	
+
 	public String getAddress() {
 		return address;
 	}
-	
+
 	public void setAddress(String address) {
 		this.address = address;
 	}
-	
+
 	public String getMatricule() {
 		return matricule;
 	}
-	
+
 	public void setMatricule(String matricule) {
 		this.matricule = matricule;
 	}
-	
+
 	public String getPassword() {
 		return password;
 	}
-	
+
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
-	public User() {}
+
+	public User() {
+	}
 
 	public User(int id, String lastname, String firstname, int age, String address, String matricule, String password) {
 		this.id = id;
@@ -82,25 +83,22 @@ public class User implements Serializable {
 		this.matricule = matricule;
 		this.password = password;
 	}
-	
-	
-	//Methods
+
+	// Methods
 	public static User login(User user) {
-		if ((user.getMatricule() != null && !user.getMatricule().equals("")) 
-				&& (user.getPassword() != null && !user.getPassword().equals("")) 
-				&& user.getLastname() == null && user.getFirstname() == null 
-				&& user.getAge() == 0 && user.getAddress() == null) {
+		if ((user.getMatricule() != null && !user.getMatricule().equals(""))
+				&& (user.getPassword() != null && !user.getPassword().equals("")) && user.getLastname() == null
+				&& user.getFirstname() == null && user.getAge() == 0 && user.getAddress() == null) {
 			User newUser = findUser(user);
 			return newUser;
-        } else if (user.getLastname() == null || user.getFirstname() == null 
-				|| user.getAge() == 0 || user.getAddress() == null 
-				|| user.getMatricule() == null || user.getPassword() == null) {
+		} else if (user.getLastname() == null || user.getFirstname() == null || user.getAge() == 0
+				|| user.getAddress() == null || user.getMatricule() == null || user.getPassword() == null) {
 			return null;
 		}
 		return user;
 	}
-	
-	//DAO Methods
+
+	// DAO Methods
 	private static User findUser(User user) {
 		DAOFactory daofact = new DAOFactory();
 		return daofact.getUserDAO().find(user);

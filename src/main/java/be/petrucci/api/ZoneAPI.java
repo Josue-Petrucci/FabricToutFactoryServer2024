@@ -15,16 +15,11 @@ import be.petrucci.javabeans.Zone;
 public class ZoneAPI {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-    public Response getAllZones() {
-        ArrayList<Zone> zoneList = Zone.getAllZones();
-        if (zoneList == null) {
-            return Response
-            		.status(Status.NOT_FOUND)
-            		.build();
-        }
-        return Response
-        		.status(Status.OK)
-        		.entity(zoneList)
-        		.build();
-    }
+	public Response getAllZones() {
+		ArrayList<Zone> zoneList = Zone.getAllZones();
+		if (zoneList == null) {
+			return Response.status(Status.NOT_FOUND).build();
+		}
+		return Response.status(Status.OK).entity(zoneList).build();
+	}
 }

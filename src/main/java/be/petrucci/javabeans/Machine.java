@@ -6,7 +6,7 @@ import be.petrucci.connection.FabricToutConnection;
 import be.petrucci.dao.DAOFactory;
 import be.petrucci.dao.MachineDAO;
 
-public class Machine implements Serializable{
+public class Machine implements Serializable {
 	private static final long serialVersionUID = -1046535624725789699L;
 	private int id;
 	private MachineType type;
@@ -72,7 +72,8 @@ public class Machine implements Serializable{
 		this.maintenance = maintenance;
 	}
 
-	public Machine() {}
+	public Machine() {
+	}
 
 	public Machine(int id, MachineType type, double size, MachineStatus status, Site site, Zone zone) {
 		this.id = id;
@@ -84,14 +85,13 @@ public class Machine implements Serializable{
 		addZone(zone);
 	}
 
-	public Machine(int id, MachineType type, double size, MachineStatus status, Site site, 
-			ArrayList<Zone> zones) {
+	public Machine(int id, MachineType type, double size, MachineStatus status, Site site, ArrayList<Zone> zones) {
 		this.id = id;
 		this.type = type;
 		this.size = size;
 		this.status = status;
 		this.site = site;
-		if(zones.size() >= 1)
+		if (zones.size() >= 1)
 			this.zones = zones;
 		else
 			throw new IllegalArgumentException("Machine zone list must not be empty");
@@ -105,16 +105,16 @@ public class Machine implements Serializable{
 		this.size = size;
 		this.status = status;
 		this.site = site;
-		if(zones.size() >= 1)
+		if (zones.size() >= 1)
 			this.zones = zones;
 		else
 			throw new IllegalArgumentException("Machine zone list must not be empty");
 		this.maintenance = maintenance;
 	}
 
-	//Methods
+	// Methods
 	public void addZone(Zone zone) {
-		if(!zones.contains(zone)) {
+		if (!zones.contains(zone)) {
 			zones.add(zone);
 		}
 	}
@@ -122,15 +122,15 @@ public class Machine implements Serializable{
 	public boolean addMachine() {
 		DAOFactory daofact = new DAOFactory();
 		MachineDAO machineDAO = new MachineDAO(FabricToutConnection.getInstance());
-    	if (this.getId() == 0 || !createMachine(daofact)) {
-	        return false;
-	    }
-	    for(Zone zone : this.getZones()) {
-    		if (!createMachineLocation(machineDAO, zone.getId())) {
-    	        return false;
-    	    }
-	    }
-	    return true;
+		if (this.getId() == 0 || !createMachine(daofact)) {
+			return false;
+		}
+		for (Zone zone : this.getZones()) {
+			if (!createMachineLocation(machineDAO, zone.getId())) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	public boolean deleteMachine() {
@@ -139,7 +139,7 @@ public class Machine implements Serializable{
 		return deleteMachineLocation(machineDAO) && deleteMachine(daofact);
 	}
 
-	//DAO methods
+	// DAO methods
 	public boolean createMachine(DAOFactory daofact) {
 		return daofact.getMachineDAO().create(this);
 	}
@@ -156,7 +156,7 @@ public class Machine implements Serializable{
 		return machineDAO.deleteMachineLocation(this);
 	}
 
-	public static ArrayList<Machine> getAllMachines(){
+	public static ArrayList<Machine> getAllMachines() {
 		DAOFactory dao = new DAOFactory();
 		return dao.getMachineDAO().findAll();
 	}
@@ -173,11 +173,11 @@ public class Machine implements Serializable{
 	@Override
 	public boolean equals(Object obj) {
 		Machine m = null;
-		if(obj == null || obj.getClass() != this.getClass()) {
+		if (obj == null || obj.getClass() != this.getClass()) {
 			return false;
 		}
-		
-		m = (Machine)obj;
+
+		m = (Machine) obj;
 		return m.getId() == this.getId() && m.getSite().getName().equals(this.getSite().getName());
 	}
 
@@ -190,5 +190,5 @@ public class Machine implements Serializable{
 	public String toString() {
 		return "Machine [id=" + id + ", type=" + type + ", size=" + size + ", status=" + status + "]";
 	}
-	
+
 }
