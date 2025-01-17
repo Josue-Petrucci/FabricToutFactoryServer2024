@@ -20,51 +20,51 @@ public class Maintenance implements Serializable {
 	private MaintenanceManager manager;
 	private ArrayList<MaintenanceWorker> workers;
 	private Machine machine;
-	
+
 	public int getId() {
 		return id;
 	}
-	
+
 	public void setId(int id) {
 		this.id = id;
 	}
-	
+
 	public Date getDate() {
 		return date;
 	}
-	
+
 	public void setDate(Date date) {
 		this.date = date;
 	}
-	
+
 	public int getDuration() {
 		return duration;
 	}
-	
+
 	public void setDuration(int duration) {
 		this.duration = duration;
 	}
-	
+
 	public String getInstructions() {
 		return instructions;
 	}
-	
+
 	public void setInstructions(String instructions) {
 		this.instructions = instructions;
 	}
-	
+
 	public String getReport() {
 		return report;
 	}
-	
+
 	public void setReport(String report) {
 		this.report = report;
 	}
-	
+
 	public MaintenanceStatus getStatus() {
 		return status;
 	}
-	
+
 	public void setStatus(MaintenanceStatus status) {
 		this.status = status;
 	}
@@ -92,9 +92,10 @@ public class Maintenance implements Serializable {
 	public void setMachine(Machine machine) {
 		this.machine = machine;
 	}
-	
-	public Maintenance() {}
-	
+
+	public Maintenance() {
+	}
+
 	public Maintenance(int id, Date date, int duration, String instruction, String report, MaintenanceStatus status) {
 		this.id = id;
 		this.date = date;
@@ -111,8 +112,9 @@ public class Maintenance implements Serializable {
 		this.machine = machine;
 		addWorker(worker);
 	}
-	
-	public Maintenance(Date date, int duration, String instruction, MaintenanceStatus status, Machine machine, MaintenanceManager manager, ArrayList<MaintenanceWorker> workers) {
+
+	public Maintenance(Date date, int duration, String instruction, MaintenanceStatus status, Machine machine,
+			MaintenanceManager manager, ArrayList<MaintenanceWorker> workers) {
 		this.date = date;
 		this.duration = duration;
 		this.instructions = instruction;
@@ -121,8 +123,9 @@ public class Maintenance implements Serializable {
 		this.manager = manager;
 		this.workers = workers;
 	}
-	
-	public Maintenance(Date date, int duration, String instruction, String report, MaintenanceStatus status, Machine machine, MaintenanceManager manager, ArrayList<MaintenanceWorker> workers, int id) {
+
+	public Maintenance(Date date, int duration, String instruction, String report, MaintenanceStatus status,
+			Machine machine, MaintenanceManager manager, ArrayList<MaintenanceWorker> workers, int id) {
 		this.date = date;
 		this.duration = duration;
 		this.instructions = instruction;
@@ -135,27 +138,27 @@ public class Maintenance implements Serializable {
 	}
 
 	public void addWorker(MaintenanceWorker worker) {
-		if(!workers.contains(worker)) {
+		if (!workers.contains(worker)) {
 			workers.add(worker);
 		}
 	}
 
-	//Methods
+	// Methods
 	public boolean deleteMaintenance() {
 		DAOFactory daofact = new DAOFactory();
 		MaintenanceDAO maintenanceDAO = new MaintenanceDAO(FabricToutConnection.getInstance());
 		return deleteWorkerMaintenance(maintenanceDAO) && deleteMaintenance(daofact);
 	}
-	
-	//DAO methods
+
+	// DAO methods
 	public boolean deleteMaintenance(DAOFactory daofact) {
 		return daofact.getMaintenanceDAO().delete(this);
 	}
-	
+
 	public boolean deleteWorkerMaintenance(MaintenanceDAO maintenanceDAO) {
 		return maintenanceDAO.deleteWorkerMaintenance(this);
 	}
-		
+
 	public boolean createMaintenance() {
 		DAOFactory dao = new DAOFactory();
 		return dao.getMaintenanceDAO().create(this);
@@ -165,8 +168,8 @@ public class Maintenance implements Serializable {
 		DAOFactory daofact = new DAOFactory();
 		return daofact.getMaintenanceDAO().update(this);
 	}
-	
-	public static ArrayList<Maintenance> getAllMaintenance(){
+
+	public static ArrayList<Maintenance> getAllMaintenance() {
 		DAOFactory dao = new DAOFactory();
 		return dao.getMaintenanceDAO().findAll();
 	}
@@ -190,7 +193,7 @@ public class Maintenance implements Serializable {
 	public int hashCode() {
 		return Objects.hash(date, duration, id, instructions, machine, manager, report, status, workers);
 	}
-	
+
 	@Override
 	public String toString() {
 		return "Maintenance [id=" + id + ", date=" + date + ", duration=" + duration + ", instructions=" + instructions

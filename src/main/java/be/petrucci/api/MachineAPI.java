@@ -32,108 +32,80 @@ public class MachineAPI {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getAllMachine() {
 		ArrayList<Machine> machineList = Machine.getAllMachines();
-        if (machineList == null) {
-            return Response
-            		.status(Status.NOT_FOUND)
-            		.build();
-        }
-        return Response
-        		.status(Status.OK)
-        		.entity(machineList)
-        		.build();
+		if (machineList == null) {
+			return Response.status(Status.NOT_FOUND).build();
+		}
+		return Response.status(Status.OK).entity(machineList).build();
 	}
+
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response createMachine(String jsonData) {
-	    try {
-	        JSONObject json = new JSONObject(jsonData);
-	        MachineType type = MachineType.valueOf(json.getString("type"));
-	        double size = json.getDouble("size");
-	        MachineStatus status = MachineStatus.valueOf(json.getString("status"));
-	        
-	        JSONObject siteJson = json.getJSONObject("site");
-	        Site site = new Site(); 
-	        site.setId(siteJson.getInt("id"));
-	        site.setName(siteJson.getString("name"));
-		    site.setCity(siteJson.getString("city"));
-		    
-	        JSONObject factoryJson = siteJson.getJSONObject("factory");
-	        Factory factory = new Factory(
-	        	factoryJson.getInt("id"),
-	        	factoryJson.getString("name"),
-	        	site
-	        );
-	        site.setFactory(factory);
-        	
-	        JSONArray zonesJsonArray = json.getJSONArray("zones");
-	        ArrayList<Zone> zones = new ArrayList<>();
-        	for (int i = 0; i < zonesJsonArray.length(); i++) {
-	            JSONObject zoneJson = zonesJsonArray.getJSONObject(i);
-	            Zone zone = new Zone();
-	            zone.setId(zoneJson.getInt("id"));
-	            zone.setZoneLetter(zoneJson.getString("zoneLetter").charAt(0));
-	            zone.setDangerLevel(DangerLevel.valueOf(zoneJson.getString("dangerLevel")));
-	            zones.add(zone);
-	        }
-        	site.setZones(zones);
-
-	        if (type == null || size == 0 || status == null ||
-	        		site == null || zones == null){
-	            return Response
-	            		.status(Status.BAD_REQUEST)
-	            		.build();
-	        }
-	        Machine machine = new Machine(0,type,size,status,site,zones);
-
-	        if (!machine.addMachine()) {
-	            return Response
-	            		.status(Status.SERVICE_UNAVAILABLE)
-	            		.build();
-	        } else {
-	            return Response
-	            		.status(Status.CREATED)
-	            		.build();
-	        }
-	    }
-	    catch (JSONException ex) {
-	        return Response
-	        		.status(Status.BAD_REQUEST)
-	        		.entity("Invalid JSON format")
-	        		.build();
-	    }
-	}
-	@DELETE
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response deleteMachine(String jsonData) {
 		try {
-	        JSONObject json = new JSONObject(jsonData);
-	        int id = json.getInt("id");
-	        if (id == 0){
-	            return Response
-	            		.status(Status.BAD_REQUEST)
-	            		.build();
-	        }
-	        Machine machine = new Machine();
-	        machine.setId(json.getInt("id"));
+			JSONObject json = new JSONObject(jsonData);
+			MachineType type = MachineType.valueOf(json.getString("type"));
+			double size = json.getDouble("size");
+			MachineStatus status = MachineStatus.valueOf(json.getString("status"));
 
-	        if (!machine.deleteMachine()) {
-	        	return Response
-	        			.status(Status.NO_CONTENT)
-	        			.build();
-	        } else {
-	        	return Response
-	        			.status(Status.OK)
-	        			.build();
-	        }
-	    }
-	    catch (JSONException ex) {
-	        return Response
-	        		.status(Status.BAD_REQUEST)
-	        		.entity("Invalid JSON format")
-	        		.build();
-	    }
-    }
+			JSONObject siteJson = json.getJSONObject("site");
+			Site site = new Site();
+			site.setId(siteJson.getInt("id"));
+			site.setName(siteJson.getString("name"));
+			site.setCity(siteJson.getString("city"));
+
+			JSONObject factoryJson = siteJson.getJSONObject("factory");
+			Factory factory = new Factory(factoryJson.getInt("id"), factoryJson.getString("name"), site);
+			site.setFactory(factory);
+
+			JSONArray zonesJsonArray = json.getJSONArray("zones");
+			ArrayList<Zone> zones = new ArrayList<>();
+			for (int i = 0; i < zonesJsonArray.length(); i++) {
+				JSONObject zoneJson = zonesJsonArray.getJSONObject(i);
+				Zone zone = new Zone();
+				zone.setId(zoneJson.getInt("id"));
+				zone.setZoneLetter(zoneJson.getString("zoneLetter").charAt(0));
+				zone.setDangerLevel(DangerLevel.valueOf(zoneJson.getString("dangerLevel")));
+				zones.add(zone);
+			}
+			site.setZones(zones);
+
+			if (type == null || size == 0 || status == null || site == null || zones == null) {
+				return Response.status(Status.BAD_REQUEST).build();
+			}
+			Machine machine = new Machine(0, type, size, status, site, zones);
+
+			if (!machine.addMachine()) {
+				return Response.status(Status.SERVICE_UNAVAILABLE).build();
+			} else {
+				return Response.status(Status.CREATED).build();
+			}
+		} catch (JSONException ex) {
+			return Response.status(Status.BAD_REQUEST).entity("Invalid JSON format").build();
+		}
+	}
+
+	@DELETE
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response deleteMachine(String jsonData) {
+		try {
+			JSONObject json = new JSONObject(jsonData);
+			int id = json.getInt("id");
+			if (id == 0) {
+				return Response.status(Status.BAD_REQUEST).build();
+			}
+			Machine machine = new Machine();
+			machine.setId(json.getInt("id"));
+
+			if (!machine.deleteMachine()) {
+				return Response.status(Status.NO_CONTENT).build();
+			} else {
+				return Response.status(Status.OK).build();
+			}
+		} catch (JSONException ex) {
+			return Response.status(Status.BAD_REQUEST).entity("Invalid JSON format").build();
+		}
+	}
 
 	@PUT
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -142,30 +114,22 @@ public class MachineAPI {
 			JSONObject json = new JSONObject(jsonData);
 			int id = json.getInt("id");
 			if (id == 0) {
-				return Response
-						.status(Status.BAD_REQUEST)
-						.build();
+				return Response.status(Status.BAD_REQUEST).build();
 			}
 			MachineStatus status = MachineStatus.valueOf(json.getString("status"));
 			Machine machine = new Machine();
 			machine.setId(id);
 			machine.setStatus(status);
 			if (!machine.updateMachine()) {
-				return Response
-						.status(Status.NOT_FOUND)
-						.build();
+				return Response.status(Status.NOT_FOUND).build();
 			} else {
-				// TODO: Send back content as specified by the HTTP protocol in case of an `OK` response for a `PUT` request
-				return Response
-						.status(Status.OK)
-						.build();
+				// TODO: Send back content as specified by the HTTP protocol in case of an `OK`
+				// response for a `PUT` request
+				return Response.status(Status.OK).build();
 			}
 		} catch (JSONException e) {
 			e.printStackTrace();
-			return Response
-					.status(Status.BAD_REQUEST)
-					.entity("Invalid JSON format")
-					.build();
+			return Response.status(Status.BAD_REQUEST).entity("Invalid JSON format").build();
 		}
 	}
 }

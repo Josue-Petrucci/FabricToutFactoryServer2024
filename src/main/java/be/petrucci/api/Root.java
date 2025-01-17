@@ -9,7 +9,7 @@ import be.petrucci.connection.FabricToutConnection;
 
 @ApplicationPath("/api")
 public class Root extends Application {
-	
+
 	@Context
 	public void setServletContext(ServletContext context) {
 		FabricToutConnection.initContext(context);

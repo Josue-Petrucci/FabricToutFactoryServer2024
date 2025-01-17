@@ -9,7 +9,7 @@ public class DAOFactory extends AbstractDAOFactory {
 	protected static final Connection conn = FabricToutConnection.getInstance();
 
 	@Override
-	public DAO<Admin> getAdminDAO() {		
+	public DAO<Admin> getAdminDAO() {
 		return new AdminDAO(conn);
 	}
 
